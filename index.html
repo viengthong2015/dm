@@ -1,0 +1,2749 @@
+<!DOCTYPE html>
+<html lang="lo">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;700&display=swap" rel="stylesheet">
+    <title>Mini project</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #027235;
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Noto Sans Lao', 'Phetsarath OT', sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+            overflow: hidden;
+            color: var(--text-color);
+        }
+
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* background-color: #00c853; */
+            overflow: hidden;
+            margin-top: 65px;
+        }
+
+        .slide {
+            opacity: 0;
+            display: none;
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            right: 15px;
+            bottom: 120px;
+            width: auto;
+            height: auto;
+            padding: 30px;
+            box-sizing: border-box;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8f6f6 98%, #027235 2%);
+            box-shadow: 0 10px 25px rgba(2, 111, 26, 0.1);
+
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        /* NEXT */
+        .slide-next {
+            animation: slideNext 0.5s ease forwards;
+        }
+
+        /* BACK */
+        .slide-back {
+            animation: slideBack 0.5s ease forwards;
+        }
+
+        @keyframes slideNext {
+            from {
+                opacity: 0;
+                transform: translateX(360px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideBack {
+            from {
+                opacity: 0;
+                transform: translateX(-360px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        h1 {
+            /* color: var(--primary-color); */
+            color: #027235;
+            /* border-bottom: 3px solid var(--secondary-color); */
+            padding-bottom: 10px;
+            width: 100%;
+
+        }
+
+        h2 {
+            color: #027235;
+            /* border-bottom: 1px solid #1e02bd; */
+        }
+
+        p,
+        li {
+            font-size: 1.2rem;
+            line-height: 1.6;
+
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 15px;
+            width: 99%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            background: linear-gradient(135deg, #afd7e3 93%, #027235 7%);
+            border-bottom-right-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: 0.3s;
+            width: 120px;
+            height: 35px;
+            background: #012073
+        }
+
+        button:hover {
+            background: #027235;
+        }
+
+        .progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: #027235;
+            transition: width 1s;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .label-row {
+            display: flex;
+            align-items: center;
+            /* fix */
+            gap: 12px;
+            margin: 15px;
+        }
+
+        .label-text {
+            letter-spacing: 1px;
+            line-height: 1.5;
+        }
+
+        .label {
+            color: white;
+            font-weight: bold;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            background: #027235;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right,
+                    rgba(255, 255, 255, 0),
+                    #027235,
+                    rgba(255, 255, 255, 0));
+        }
+
+
+
+
+        /* PANEL */
+        .st-panel {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #e5e9f0;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: all 0.35s ease;
+            position: relative;
+            /* background: linear-gradient(135deg, #f8f6f6 98%, #027235 2%); */
+        }
+
+        /* FULLSCREEN */
+        .st-panel.fullscreen {
+            position: fixed;
+            inset: 15px;
+            width: auto;
+            max-width: none;
+            height: auto;
+            z-index: 9999;
+            border-radius: 20px;
+            animation: zoomIn 0.25s ease;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.96);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* HEADER */
+        .st-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: linear-gradient(135deg,
+                    #ffffff,
+                    #f8fbff);
+            border-bottom: 1px solid #edf1f7;
+        }
+
+        .left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #00c853;
+            box-shadow: 0 0 10px rgba(0, 200, 83, 0.4);
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        /* ACTIONS */
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #eef3f8;
+
+            cursor: pointer;
+
+            font-size: 16px;
+            color: #374151;
+
+            transition: 0.25s;
+        }
+
+        .icon-btn:hover {
+            background: #dde7f1;
+            transform: translateY(-2px);
+        }
+
+        /* CONTENT */
+        .st-content {
+            padding: 24px;
+            color: #4b5563;
+            line-height: 1.8;
+            overflow: auto;
+            max-height: 500px;
+            transition: all 0.3s ease;
+        }
+
+        .fullscreen .st-content {
+            max-height: calc(100vh - 120px);
+        }
+
+        /* MINIMIZE */
+        .st-panel.minimized .st-content {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            overflow: hidden;
+        }
+
+        /* BADGE */
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .modern-label {
+            display: inline-block;
+            padding: 10px 18px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+
+            background: linear-gradient(135deg, #027235, #04a54f);
+
+            /* border-radius: 12px 12px 0px 0px; */
+            border-radius: 12px;
+            box-shadow:
+                0 4px 12px rgba(2, 114, 53, 0.25),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
+
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .modern-label:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 8px 18px rgba(2, 114, 53, 0.35),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+
+
+        .dashboard-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 12px 20px;
+
+            background: white;
+            border-left: 5px solid #027235;
+
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f2937;
+
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .dashboard-label .dot {
+            width: 10px;
+            height: 10px;
+            background: #04a54f;
+            border-radius: 50%;
+
+            box-shadow: 0 0 10px #04a54f;
+        }
+
+        .header-container {
+            position: fixed;
+            top: 10px;
+            left: 26px;
+            width: 98%;
+
+            display: flex;
+            justify-content: center;
+
+            z-index: 1000;
+        }
+
+        .animated-label {
+            width: 100%;
+            margin: 0;
+
+            padding: 12px 24px;
+
+            color: white;
+            font-weight: bold;
+            text-align: center;
+
+            background: linear-gradient(270deg,
+                    #054e27,
+                    #04a54f,
+                    #04a54f,
+                    #6defaa);
+
+            background-size: 400% 400%;
+
+            border-radius: 12px 12px 0px 0px;
+
+            animation: gradientMove 6s ease infinite;
+
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+
+        .code-box {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+        }
+
+
+        /* Container for the entire cell */
+        .jupyter-cell {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin-bottom: 1em;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Common prompt style (The In [ ]: part) */
+        .prompt {
+            min-width: 90px;
+            padding: 0.4em;
+            margin: 0;
+            font-family: monospace;
+            font-size: 14px;
+            text-align: right;
+            line-height: 1.21429em;
+        }
+
+        /* Input Area (Code) */
+        .input-container {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+        }
+
+        .input-prompt {
+            color: #303F9F;
+        }
+
+        .code-area {
+            flex: 1;
+            background-color: #f7f7f7;
+            border: 1px solid #cfcfcf;
+            border-radius: 2px;
+            padding: 0.1em;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 20px;
+            line-height: 1.21429em;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        /* Output Area */
+        .output-container {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            margin-top: -1px;
+            /* Overlap borders slightly */
+        }
+
+        .output-prompt {
+            color: #D84315;
+        }
+
+        .output-area {
+            flex: 1;
+            padding: 0.1em;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 20px;
+            line-height: 1.21429em;
+            white-space: pre-wrap;
+            color: #000;
+            border: 1px solid #ad6f5c;
+        }
+
+
+
+        /* Container styling */
+        .modern-details {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+            padding: 15px;
+        }
+
+        .modern-details:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Summary header */
+        .modern-details summary {
+            list-style: none;
+            /* Hides default arrow in most browsers */
+            padding: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            background-color: #f4f7f7;
+            border-radius: 10px 10px 0 0;
+        }
+
+        /* Hides the default arrow in Safari */
+        .modern-details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        /* Custom Indicator (The Arrow) */
+        .modern-details summary::after {
+            content: '🞂';
+            /* Or use a SVG/icon */
+            transition: transform 0.3s ease;
+            color: #64748b;
+        }
+
+        /* Rotate arrow when open */
+        .modern-details[open] summary::after {
+            transform: rotate(90deg);
+        }
+
+        /* Inner content padding */
+        .modern-details .content {
+            padding: 0 1rem 1rem 1rem;
+            line-height: 1.6;
+            color: #475569;
+            border-top: 1px solid #f1f5f9;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        /* Simple fade-in animation */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* ນຳເຂົ້າ Font ລາວເພື່ອຄວາມງາມ */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;700&display=swap');
+
+        /* body {
+            background-color: #f0f4f5;
+            font-family: 'Noto Sans Lao', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+        } */
+
+        /* Container ຈັດລຽງ Card ທັງໝົດ */
+        .panel-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            /* flex-wrap: wrap; */
+            /* ໃຫ້ມັນລົງແຖວໃໝ່ອັດຕະໂນມັດຖ້າໜ້າຈໍນ້ອຍ */
+            /* max-width: 1200px; */
+            width: 100%;
+            /* margin: 0 auto; */
+            margin: 0px;
+            /* height: 100%; */
+
+        }
+
+        /* Style ພື້ນຖານຂອງ Card */
+        .panel-card {
+            background-color: #f4f7f7;
+            /* ສີພື້ນຫຼັງຂາວອົມເທົາ/ຟ້າອ່ອນໆ */
+            border-radius: 16px;
+            /* ມົນມຸມ */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            /* ເງົາອ່ອນໆດ້ານລຸ່ມ */
+            width: 220px;
+            min-height: 280px;
+            padding: 24px 20px;
+            /* padding: 5px 5px; */
+            box-sizing: border-box;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        }
+
+        /* ເອັບເຟັກເວລາເອົາເມົ້າສ໌ໄປຊີ້ (Hover) */
+        .panel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ກຳນົດສີຂອບດ້ານເທິງຂອງແຕ່ລະ Card ໃຫ້ຄືໃນຮູບ */
+        .card-teal {
+            border-top: 10px solid #237b76;
+        }
+
+        .card-blue {
+            border-top: 10px solid #70b2bc;
+        }
+
+        .card-orange {
+            border-top: 10px solid #f1a429;
+        }
+
+        .card-coral {
+            border-top: 10px solid #f18a6f;
+        }
+
+        .card-purple {
+            border-top: 10px solid #947ba7;
+        }
+
+        .card-green1 {
+            border-top: 10px solid #05cf42;
+        }
+
+        .card-green2 {
+            border-top: 10px solid #0544f2;
+        }
+
+        /* ໂຕໜັງສື "ມື້ທີ" */
+        .card-day {
+            font-size: 14px;
+            color: #8a9a9d;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        /* ຕົວເລກຂະໜາດໃຫຍ່ */
+        .card-number {
+            font-size: 72px;
+            font-weight: bold;
+            color: #1a5163;
+            /* ສີຟ້າເຂັ້ມ */
+            line-height: 1;
+            margin: 15px 0;
+        }
+
+        /* ເນື້ອຫາດ້ານລຸ່ມ */
+        .card-text {
+            font-size: 16px;
+            color: #1a5163;
+            font-weight: 700;
+            line-height: 1.5;
+            margin: 0;
+
+            /* ເພີ່ມ 2 ແຖວນີ້ເຂົ້າໄປ */
+            overflow-wrap: break-word;
+            word-break: break-word;
+
+            /* padding: 30px;
+            text-wrap:wrap;
+            flex-wrap: wrap; */
+        }
+
+
+        .containerLR {
+            display: flex;
+            /* height: 100vh; */
+            /* full screen height */
+        }
+
+        .leftL {
+            width: 60%;
+            /* background: lightblue; */
+            padding: 15px;
+        }
+
+        .rightR {
+            width: 40%;
+            /* background: lightgreen; */
+            padding: 10px;
+        }
+
+
+
+        .progress1 {
+            width: 300px;
+            height: 30px;
+            background-color: #ddd;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar1 {
+            height: 100%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+            width: 0;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress" id="progress-bar"></div>
+    <div class="header-container">
+        <h2 class="animated-label">
+            ບົດລາຍງານໂຄງການຂະໜາດນ້ອຍ (Mini Project Report)<br>
+            ການພະຍາກອນຜົນການຮຽນຂອງນັກສຶກສາ (Student Academic Performance Prediction)
+        </h2>
+    </div>
+    <!-- <hr> -->
+
+    <!-- <p class="modern-label"
+        style="width: 96%; margin-left: 10px; border-radius: 12px 12px 0px 0px; text-align: center;">
+        ບົດລາຍງານໂຄງການຂະໜາດນ້ອຍ (Mini Project Report)</p> -->
+
+    <div class="slide-container">
+        <!-- Slide 1 -->
+        <div class="slide active">
+
+            <!-- <h1 style="text-align: center; margin-top: 30px;">ບົດລາຍງານໂຄງການຂະໜາດນ້ອຍ (Mini Project Report)</h1>-->
+
+
+            <br>
+            <div class="dashboard-label" style="width: 95%; font-size: 20px;">
+                📖 ວິຊາ:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ການຂຸດຄົ້ນຂໍ້ມູນ (Data Mining) |
+                207DM111 | ຈຳນວນໜ່ວຍກິດ 3 (2-2-5) <br><br>
+                👤 ນັກສຶກສາ:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ວຽງທອງ ຈົ່ງຫວາຊົ່ງ <br><br>
+                🆔 ລະຫັດນັກສຶກສາ:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;207N0014/26 <br><br>
+                👨‍🏫 ອາຈານສອນ:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ສົມມິດ ທຸມມາລີ
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide">
+            <h2>ເນື້ອໃນ</h2>
+
+            <div class="containerLR" style="font-size: 25px;">
+                <div class="leftL">
+
+                    <!-- <div class="label-row">
+                        
+                            <span class="label">1</span>
+                            <del><span class="label-text">ຫົວຂໍ້ບົດໂຄງການຂະໜາດນ້ອຍ (mini prject)</span></del>
+                        
+                    </div> -->
+                    <div class="label-row">
+                        <span class="label">1</span>
+                        <span class="label-text">ບົດນຳ (introduction)</span>
+                    </div>
+                    <div class="label-row">
+                        <span class="label">2</span>
+                        <span class="label-text">ຈຸດປະສົງ (Objectives)</span>
+                    </div>
+                    <div class="label-row">
+                        <span class="label">3</span>
+                        <span class="label-text">ຊຸດຂໍ້ມູນທີ່ໃຊ້ (Data set)</span>
+                    </div>
+
+
+                    <div class="label-row">
+                        <span class="label">4</span>
+                        <span class="label-text">ຂັ້ນຕອນການເຮັດ Data mining</span>
+                    </div>
+                    <div class="label-row">
+                        <span class="label">5</span>
+                        <span class="label-text">Data Preprocessing</span>
+                    </div>
+                    <div class="label-row">
+                        <span class="label">6</span>
+                        <span class="label-text">Algorithm ທີ່ໃຊ້</span>
+                    </div>
+                </div>
+
+                <div class="rightR">
+
+                    <div class="label-row">
+                        <span class="label">7</span>
+                        <span class="label-text">ການສ້າງແບບຈຳລອງ (Model building)</span>
+                    </div>
+                    <div class="label-row">
+                        <span class="label">8</span>
+                        <span class="label-text">ການປະເມີນຜົນ (Evaluation)</span>
+                    </div>
+                    <div class="label-row">
+                        <span class="label">9</span>
+                        <span class="label-text">ຜົນໄດ້ຮັບ (Result)</span>
+                    </div>
+                    <div class="label-row">
+                        <span class="label">10</span>
+                        <span class="label-text">ບັນຫາ ແລະ ອຸປະສັກ</span>
+                    </div>
+                    <div class="label-row">
+                        <span class="label">11</span>
+                        <span class="label-text">ສະຫຼຸບຜົນການສຶກສາ (Conclusion)</span>
+                    </div>
+                    <div class="label-row">
+                        <span class="label">12</span>
+                        <span class="label-text">ຂໍ້ສະເໜີແນະ (Future works)</span>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+        <!-- Slide 3 -->
+        <div class="slide">
+            <h2>1. ບົດນຳ (Introduction)</h2>
+            <p>
+                ໃນປັດຈຸບັນ, ລະບົບການສຶກສາພວມກຳລັງຫັນປ່ຽນໄປສູ່ຍຸກດິຈິຕອນ ທີ່ມີການນຳໃຊ້ເຕັກໂນໂລຊີ ແລະ
+                ລະບົບຖານຂໍ້ມູນເຂົ້າໃນການຄຸ້ມຄອງການຮຽນ-ການສອນຢ່າງກວ້າງຂວາງ. ການປ່ຽນແປງນີ້ເຮັດໃຫ້ມີຂໍ້ມູນດ້ານການສຶກສາ
+                (Educational Data) ຖືກສະສົມໄວ້ເປັນຈຳນວນຫຼວງຫຼາຍ ເຊິ່ງສ່ວນໃຫຍ່ຍັງບໍ່ທັນໄດ້ຖືກນຳມາສະກັດ ຫຼື
+                ວິເຄາະໃຫ້ເກີດປະໂຫຍດສູງສຸດ. ບັນຫາທີ່ພົບເລື້ອຍໃນສະຖາບັນການສຶກສາແມ່ນ ອັດຕາການຕົກຄ້າງ,
+                ການປະລະການຮຽນຂອງນັກສຶກສາ (Student Dropout), ແລະ ຜົນການຮຽນທີ່ບໍ່ເຖິງເກນມາດຕະຖານ
+                ເຊິ່ງບັນຫາເຫຼົ່ານີ້ບໍ່ພຽງແຕ່ສົ່ງຜົນກະທົບຕໍ່ອະນາຄົດຂອງໂຕນັກສຶກສາເອງເທົ່ານັ້ນ ແຕ່ຍັງສົ່ງຜົນຕໍ່ຄຸນນະພາບ ແລະ
+                ຊື່ສຽງຂອງສະຖາບັນການສຶກສາອີກດ້ວຍ. ທີ່ຜ່ານມາ, ການຕິດຕາມ ແລະ ຊ່ວຍເຫຼືອນັກສຶກສາທີ່ມີຄວາມສ່ຽງຕໍ່ບັນຫາດັ່ງກ່າວ
+                ມັກຈະເຮັດແບບຕັ້ງທ່າຮັບ
+                ຄື ລໍຖ້າໃຫ້ຜົນການຮຽນອອກມາບໍ່ດີກ່ອນ ຈຶ່ງມີການແນະນຳ ເຊິ່ງມັນຈະຊ້າເກີນໄປ ແລະ ບໍ່ທັນການ.
+            </p>
+            <p>
+                ດ້ວຍເຫດນີ້, ການນຳໃຊ້ເຕັກນິກ ການຂຸດຄົ້ນຂໍ້ມູນ (Data Mining) ແລະ ການຮຽນຮູ້ຂອງເຄື່ອງຈັກ (Machine Learning)
+                ເຂົ້າໃນການພະຍາກອນຜົນການຮຽນຂອງນັກສຶກສາ (Student Academic Performance Prediction) ຈຶ່ງມີຄວາມສຳຄັນ ແລະ
+                ເປັນແນວທາງຮູບແບບໃໝ່ທີ່ມີປະສິດທິພາບສູງ. ການວິເຄາະຂໍ້ມູນຮູບແບບນີ້ ຈະຊ່ວຍຄົ້ນຫາປັດໄຈຕ່າງໆ
+                ທີ່ມີອິດທິພົນຕໍ່ຜົນການຮຽນ ບໍ່ວ່າຈະເປັນ ປະຫວັດການຮຽນ, ພຶດຕິກຳການມາຮຽນ, ຫຼື ປັດໄຈທາງດ້ານສັງຄົມ ແລະ ອື່ນໆ.
+            </p>
+            <p>
+                ຄວາມສຳຄັນຂອງວຽກງານນີ້ ຈະຊ່ວຍປ່ຽນຮູບແບບການບໍລິຫານການສຶກສາຈາກ <b>"ການຕັ້ງທ່າຮັບ"</b> ມາເປັນ <b>"ການປ້ອງກັນ ແລະ
+                ຄາດການລ່ວງໜ້າ"</b>. ຜົນປະໂຫຍດທີ່ໄດ້ຮັບແມ່ນສາມາດແບ່ງອອກເປັນ 3 ສ່ວນຫຼັກ ຄື: </p>
+
+            <ol>
+                <li>
+                    <strong>ດ້ານອາຈານ ແລະ ຜູ້ບໍລິຫານ:</strong> ສາມາດຄາດຄະເນກຸ່ມນັກສຶກສາທີ່ມີຄວາມສ່ຽງ (At-risk students)
+                    ໄດ້ຕັ້ງແຕ່ຫົວທີ
+                    ເຮັດໃຫ້ສາມາດວາງແຜນຊ່ວຍເຫຼືອ, ປັບປຸງຫຼັກສູດ, ຫຼື ໃຫ້ຄຳປຶກສາໄດ້ຢ່າງຖືກຈຸດ ແລະ ທັນການ.
+                </li>
+                <li>
+                    <strong>ດ້ານນັກສຶກສາ:</strong> ໄດ້ຮັບການແຈ້ງເຕືອນ ແລະ
+                    ປັບປຸງພຶດຕິກຳການຮຽນຂອງຕົນເອງເພື່ອຫຼີກລ້ຽງການຕົກວິຊາ ຫຼື ການປະລະການຮຽນ.
+                </li>
+                <li>
+                    <strong>ດ້ານສະຖາບັນ:</strong> ຊ່ວຍຍົກລະດັບມາດຕະຖານການສຶກສາ, ເພີ່ມອັດຕາການຈົບການສຶກສາ, ແລະ
+                    ບໍລິຫານຊັບພະຍາກອນມະນຸດໄດ້ຢ່າງມີປະສິດທິພາບ.
+                </li>
+            </ol>
+            <p>
+                ດັ່ງນັ້ນ, ງານວິໄຈສະບັບນີ້ຈຶ່ງມຸ່ງສຶກສາ ແລະ ພັດທະນາແບບຈຳລອງການພະຍາກອນຜົນການຮຽນ
+                ເພື່ອເປັນເຄື່ອງມືສະໜັບສະໜູນການຕັດສິນໃຈ
+                ໃຫ້ແກ່ສະຖາບັນການສຶກສາໃນການພັດທະນາຄຸນນະພາບການຮຽນ-ການສອນໃຫ້ມີຄວາມຍືນຍົງໃນຍຸກດີຈີຕອນ.
+            </p>
+        </div>
+
+        <!-- <div class="label-row">
+                <span class="label">1</span>
+                <span class="label-text">ເພື່ອສຶກສາ ແລະ ຄົ້ນຫາປັດໄຈຫຼັກ (feature ຫຼັກ)
+                    ທີ່ມີອິດທິພົນຕໍ່ຜົນການຮຽນຂອງນັກສຶກສາ ໂດຍນຳໃຊ້ເຕັກນິກການຂຸດຄົ້ນຂໍ້ມູນ (Data Mining).</span>
+            </div>
+            <div class="label-row">
+                <span class="label">2</span>
+                <span class="label-text">ເພື່ອພັດທະນາ ແລະ ປຽບທຽບປະສິດທິພາບ ຂອງແບບຈຳລອງ (Models)
+                    ໃນການພະຍາກອນຜົນການຮຽນຂອງນັກສຶກສາ.</span>
+            </div>
+            <div class="label-row">
+                <span class="label">3</span>
+                <span class="label-text">ເພື່ອສ້າງເຄື່ອງມືສະໜັບສະໜູນການຕັດສິນໃຈ ໃຫ້ແກ່ອາຈານ ແລະ ສະຖາບັນການສຶກສາ
+                    ໃນການຊ່ວຍເຫຼືອນັກສຶກສາກຸ່ມສ່ຽງໄດ້ຢ່າງທັນການ</span>
+            </div> -->
+
+        <!-- Slide 4 -->
+        <div class="slide">
+            <h2>2. ຈຸດປະສົງ</h2>
+            <details class="modern-details" style="font-size: 25px;">
+                <summary>2.1. ຈຸດປະສົງລວມ</summary>
+                <div class="content">
+                    <div class="panel-container">
+
+                        <div class="panel-card card-teal">
+                            <div class="card-day">ປັດໃຈສຳຄັນຕໍ່ຜົນການຮຽນ</div>
+                            <div class="card-number">1</div>
+                            <p class="card-text">ເພື່ອສຶກສາ ແລະ ຄົ້ນຫາປັດໄຈຫຼັກ (feature ຫຼັກ)
+                                ທີ່ມີອິດທິພົນຕໍ່ຜົນການຮຽນຂອງນັກສຶກສາ ໂດຍນຳໃຊ້ເຕັກນິກການຂຸດຄົ້ນຂໍ້ມູນ (Data Mining).</p>
+                        </div>
+
+                        <div class="panel-card card-blue">
+                            <div class="card-day">ປະສິດທິພາບຂອງ models</div>
+                            <div class="card-number">2</div>
+                            <p class="card-text">ເພື່ອພັດທະນາ ແລະ ປຽບທຽບປະສິດທິພາບ ຂອງແບບຈຳລອງ (Models)
+                                ໃນການພະຍາກອນຜົນການຮຽນຂອງນັກສຶກສາ</p>
+                        </div>
+
+                        <div class="panel-card card-orange">
+                            <div class="card-day">ສ້າງເຄື່ອງມື</div>
+                            <div class="card-number">3</div>
+                            <p class="card-text">ເພື່ອສ້າງເຄື່ອງມືສະໜັບສະໜູນການຕັດສິນໃຈ ໃຫ້ແກ່ອາຈານ ແລະ ສະຖາບັນການສຶກສາ
+                                ໃນການຊ່ວຍເຫຼືອນັກສຶກສາກຸ່ມສ່ຽງໄດ້ຢ່າງທັນການ</p>
+                        </div>
+                    </div>
+
+                </div>
+            </details>
+            <details class="modern-details" style="font-size: 25px;">
+                <summary>2.2. ຈຸດປະສົງຫຼັກ</summary>
+                <div class="content">
+                    <div class="panel-container">
+
+                        <div class="panel-card card-teal">
+                            <div class="card-day">Predict final grade</div>
+                            <div class="card-number">1</div>
+                            <p class="card-text">A ຫຼື B ຫຼື C ຫຼື D</p>
+                        </div>
+                        <div class="panel-card card-coral">
+                            <div class="card-day">Feature important</div>
+                            <div class="card-number">2</div>
+                            <p class="card-text">ປັດໄຈທີ່ສຳຄັນ</p>
+                        </div>
+
+                        <div class="panel-card card-blue">
+                            <div class="card-day">ລາຍການທັງໝົດ</div>
+                            <div class="card-number">3</div>
+                            <p class="card-text">ລາຍການທັງໝົດ (total record): 5,200</p>
+                        </div>
+
+                        <div class="panel-card card-orange">
+                            <div class="card-day">task type</div>
+                            <div class="card-number">4</div>
+                            <p class="card-text">ການຈັດຈຳແນກຂໍ້ມູນ (Classification)</p>
+                        </div>
+                    </div>
+
+                </div>
+            </details>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="slide">
+            <h2>3. ຊຸດຂໍ້ມູນທີ່ໃຊ້ (Data set)</h2>
+            <p>ຊຸດຂໍ້ມູນທີ່ນຳໃຊ້ໃນການວິໄຈຄັ້ງນີ້ ແມ່ນໄດ້ມາຈາກລະບົບຖານຂໍ້ມູນການສຶກສາໃນອິນເຕີເນັດ (kaggle.com &
+                worldbank.org) ທີ່ມີ 5200 ລາຍການ (record), 18 features ເຊິ່ງປະກອບດ້ວຍຂໍ້ມູນຂອງບັນດາ feature
+                ທີ່ກ່ຽວຂ້ອງກັບນັກສຶກສາ
+                ແລະ ເປັນຊຸດຂໍ້ມູນທີ່ສົມບູນແບບ (ບໍ່ມີຂໍ້ມູນຊ້ຳຊ້ອນ, ບໍ່ມີ missing value, ...),
+            </p>
+            <p>
+                ໂຄງສ້າງຂອງຊຸດຂໍ້ມູນ ໄດ້ຖືກຄັດເລືອກ ແລະ ແບ່ງອອກເປັນ 3 ກຸ່ມປັດໄຈຫຼັກ ທີ່ມີຜົນຕໍ່ການຮຽນ ຄື: (1)
+                ຂໍ້ມູນສ່ວນຕົວຂອງນັກສຶກສາ ເຊັ່ນ: ເພດ, ອາຍຸ, ລະດັບການສຶກສາຂອງຜູ້ປົກຄອງ, ..., (2) ປະຫວັດການສຶກສາ ເຊັ່ນ:
+                ຄະແນນກາງພາກ, ຄະແນນຂອງປີຜ່ານມາ, ແລະ (3) ພຶດຕິກຳການຮຽນ ເຊັ່ນ: ອັດຕາການມາຮຽນ, ການສົ່ງວຽກບ້ານ,
+                ເວລາຮຽນນອກໂມງ, ...
+            </p>
+            <p>
+                ຊຸດຂໍ້ມູນປະກອບດ້ວຍບັນດາປະເພດຂໍ້ມູນຂອງ Attribute/Features ຄື: Nominal (ເພດ: ຍິງ, ຊາຍ), Ordinal (ເກຣດ: A,
+                B, C, D), ແລະ Internal (ຄະແນນ: 0-100), ເປັນຂໍ້ມູນປະເພດຕົວເລກ ແລະ ຂໍ້ຄວາມ.
+            </p>
+
+            <details class="modern-details">
+                <summary>ລາຍລະອຽດນິຍາມຂໍ້ມູນ (Meta data)</summary>
+                <div class="content">
+                    <table border="1" style="border-collapse: collapse; width: 100%; font-family: sans-serif;">
+                        <thead>
+                            <tr style="background-color: #008080; color: white; text-align: left;">
+                                <th style="padding: 8px;">#</th>
+                                <th style="padding: 8px;">Feature (Column)</th>
+                                <th style="padding: 8px;">ປະເພດຂໍ້ມູນ (Data type)</th>
+                                <th style="padding: 8px;">ລາຍລະອຽດ</th>
+                                <th style="padding: 8px;">ໝາຍເຫດ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">1</td>
+                                <td style="padding: 8px;">student_id</td>
+                                <td style="padding: 8px;">Object</td>
+                                <td style="padding: 8px;">- ເປັນລະຫັດສະເພາະຂອງນັກສຶກສາ<br>-
+                                    ນັກສຶກສາຜູ້ໜຶ່ງມີພຽງລະຫັດດຽວ (Unique)</td>
+                                <td style="padding: 8px;">Attribute</td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2;">
+                                <td style="padding: 8px; text-align: center;">2</td>
+                                <td style="padding: 8px;">age</td>
+                                <td style="padding: 8px;">int64</td>
+                                <td style="padding: 8px;">- ເປັນອາຍຸຂອງນັກສຶກສາ (ຫົວໜ່ວຍເປັນ ປີ)</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">3</td>
+                                <td style="padding: 8px;">gender</td>
+                                <td style="padding: 8px;">Object</td>
+                                <td style="padding: 8px;">- ເພດຂອງນັກສຶກສາ<br>- ເປັນ ຕົວປ່ຽນແບບ Nominal</td>
+                                <td style="padding: 8px;">Attribute</td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2;">
+                                <td style="padding: 8px; text-align: center;">4</td>
+                                <td style="padding: 8px;">parent_education</td>
+                                <td style="padding: 8px;">Object</td>
+                                <td style="padding: 8px;">- ເປັນລະດັບການສຶກສາຂອງພໍ່-ແມ່ ຫຼື
+                                    ຜູ້ປົກຄອງນັກສຶກສາ<br>- ເປັນຕົວປ່ຽນແບບ Ordinal (ປະລິມຍາໂທ ຫຼື ສູງກວ່າ,
+                                    ປະລິມຍາຕີ, ສາມັນສຶກສາ)</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">5</td>
+                                <td style="padding: 8px;">parent_income</td>
+                                <td style="padding: 8px;">Object</td>
+                                <td style="padding: 8px;">- ເປັນລາຍຮັບຂອງພໍ່-ແມ່ ຫຼື ຜູ້ປົກຄອງ<br>-
+                                    ເປັນຕົວປ່ຽນແບບ Ordinal (ລາຍຮັບສູງ, ປານກາງ ແລະ ຕ່ຳ)</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2;">
+                                <td style="padding: 8px; text-align: center;">6</td>
+                                <td style="padding: 8px;">study_hours_per_week</td>
+                                <td style="padding: 8px;">int64</td>
+                                <td style="padding: 8px;">- ເປັນຈຳນວນຊົ່ວໂມງທີ່ນັກສຶກສາຮຽນຕໍ່ທິດ
+                                    (ບໍ່ນັບເວລາຮຽນຕາມຕາຕະລາງຂອງໂຮງຮຽນ)<br>- ເປັນເວລາຮຽນເມື່ອຫວ່າງ,
+                                    ເວລາເຮັດວຽກບ້ານ, ເວລາຄົ້ນຄວ້າ, ເວລາເຂົ້າຫ້ອງສະໝຸດ, ...</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">7</td>
+                                <td style="padding: 8px;">attendance_rate</td>
+                                <td style="padding: 8px;">int64</td>
+                                <td style="padding: 8px;">- ອັດຕາການມາໂຮງຮຽນ (%)</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2;">
+                                <td style="padding: 8px; text-align: center;">8</td>
+                                <td style="padding: 8px;">assignments_completed</td>
+                                <td style="padding: 8px;">int64</td>
+                                <td style="padding: 8px;">- ຈຳນວນວຽກບ້ານຫຼືບົດຝຶກຫັດທີ່ເຮັດສຳເລັດ</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">9</td>
+                                <td style="padding: 8px;">midterm_score</td>
+                                <td style="padding: 8px;">int64</td>
+                                <td style="padding: 8px;">- ຄະແນນກາງພາກ (0 ຫາ 100)</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2;">
+                                <td style="padding: 8px; text-align: center;">10</td>
+                                <td style="padding: 8px;">previous_gpa</td>
+                                <td style="padding: 8px;">float64</td>
+                                <td style="padding: 8px;">- ຄະແນນສະເລ່ຍຜ່ານມາ (ລະຫວ່າງ 0 ຫາ 4)</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">11</td>
+                                <td style="padding: 8px;">internet_access</td>
+                                <td style="padding: 8px;">Object</td>
+                                <td style="padding: 8px;">- ການເຂົ້າເຖິງອິນເຕີເນັດ
+                                    (ບໍ່ນັບເນັດຢູ່ໂຮງຮຽນ)<br>- ປະເພດຂໍ້ມູນ yes/no</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2;">
+                                <td style="padding: 8px; text-align: center;">12</td>
+                                <td style="padding: 8px;">extracurricular_activities</td>
+                                <td style="padding: 8px;">Object</td>
+                                <td style="padding: 8px;">- ກິດຈະກຳນອກໂຮງຮຽນ (yes/no)</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">13</td>
+                                <td style="padding: 8px;">sleep_hours_per_day</td>
+                                <td style="padding: 8px;">int64</td>
+                                <td style="padding: 8px;">- ຈຳນວນຊົ່ວໂມງທີ່ໄດ້ນອນຕໍ່ມື້</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2;">
+                                <td style="padding: 8px; text-align: center;">14</td>
+                                <td style="padding: 8px;">stress_level</td>
+                                <td style="padding: 8px;">Object</td>
+                                <td style="padding: 8px;">- ຄວາມກົດດັນ (ຕຶງຄຽດ)<br>- ເປັນ Ordinal (ສູງ,
+                                    ປານກາງ, ຕ່ຳ)</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">15</td>
+                                <td style="padding: 8px;">absences</td>
+                                <td style="padding: 8px;">int64</td>
+                                <td style="padding: 8px;">- ຈຳນວນການຂາດຮຽນ (ຄັ້ງ)</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2;">
+                                <td style="padding: 8px; text-align: center;">16</td>
+                                <td style="padding: 8px;">participation_score</td>
+                                <td style="padding: 8px;">int64</td>
+                                <td style="padding: 8px;">- ຄະແນນມີສ່ວນຮ່ວມໃນຫ້ອງ (0 ຫາ 10)</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">17</td>
+                                <td style="padding: 8px;">final_exam_score</td>
+                                <td style="padding: 8px;">int64</td>
+                                <td style="padding: 8px;">- ຄະແນນທ້າຍພາກຮຽນ (0 ຫາ 100)</td>
+                                <td style="padding: 8px;">Feature</td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2; font-weight: bold; color: #00c853;">
+                                <td style="padding: 8px; text-align: center;">18</td>
+                                <td style="padding: 8px;">final_grade</td>
+                                <td style="padding: 8px;">Object</td>
+                                <td style="padding: 8px;">- ເກຣດສຸດທ້າຍ<br>- Ordinal (A, B, C, D)</td>
+                                <td style="padding: 8px;">Feature</td>
+
+                            </tr>
+                            <tr style="background-color: #00a86b; color: white; text-align: center; font-weight: bold;">
+                                <td colspan="5" style="padding: 10px; font-size: 1.1em;">ມາດຕະຖານການຕັດເກຣດ
+                                </td>
+                            </tr>
+                            <tr style="text-align: center; font-weight: bold;">
+                                <td style="padding: 8px;">A >= 85</td>
+                                <td colspan="2" style="padding: 8px;">70 <= B < 85</td>
+                                <td style="padding: 8px;">55 <= C < 70</td>
+                                <td style="padding: 8px;">D < 55</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+            <details class="modern-details">
+                <summary>ແບບຂອງຊຸດຂໍ້ມູນ (student_performance.csv)</summary>
+                <div class="content">
+                    <img src="image/csv.png" style="width: 580px; height: 380px;">
+                </div>
+            </details>
+        </div>
+
+
+
+        <!-- Slide 6 -->
+
+        <div class="slide">
+            <h2>4. ຂັ້ນຕອນການເຮັດ Data mining</h2>
+            <details class="modern-details">
+                <summary>1. Data Collection</summary>
+                <p>ກິດຈະກຳ: ຊອກຄົ້ນຂໍ້ມູນຈາກອິນເຕີເນັດ (kaggle.com & worldbank.org) ແລະ ດາວໂຫຼດຊຸດຂໍ້ມູນດັ່ງກ່າວ.</p>
+                <p>ຂໍ້ມູນທີ່ໄດ້: ຂໍ້ມູນສ່ວນຕົວ, ຄະແນນສະເລ່ຍ (GPA), ອັດຕາການມາໂຮງຮຽນ, ເວລາຮຽນນອກຊົ່ວໂມງ, ...</p>
+            </details>
+
+            <details class="modern-details">
+                <summary>2. Data Cleaning</summary>
+                <p>ກິດຈະກຳ: ກວດສອບ ແລະ ຈັດການກັບຂໍ້ມູນທີ່ບໍ່ສົມບູນ (ຊຸດຂໍ້ມູນນີ້ ສົມບູນເກືອບ 100%).</p>
+                <p>ວິທີການ: ກວດສອບຄ່າທີ່ຂາດຫາຍ (Missing Values), ກວດຂໍ້ມູນທີ່ຊ້ຳຊ້ອນ ຫຼື ຜິດປົກກະຕິ (Outliers), ແລະ
+                    ເຮັດການທຳຄວາມສະອາດຂໍ້ມູນ</p>
+            </details>
+
+
+            <details class="modern-details">
+                <summary>3. Data Preprocessing</summary>
+                <p>ກິດຈະກຳ: ປັບແຕ່ງ ແລະ ແປງຮູບແບບຂໍ້ມູນໃຫ້ພ້ອມສຳລັບການປະມວນຜົນ.</p>
+                <p>ວິທີການ: ປ່ຽນຂໍ້ມູນໂຕໜັງສືໃຫ້ເປັນໂຕເລກ (ເຊັ່ນ: ເພດ) ແລະ ປັບມາດຕະຖານ (Scaling)
+                    ໃຫ້ຄະແນນທຸກວິຊາຢູ່ໃນເກນດຽວກັນ.</p>
+            </details>
+
+            <details class="modern-details">
+                <summary>4. Feature Selection</summary>
+                <p>ກິດຈະກຳ: ຄັດເລືອກເອົາສະເພາະຕົວແປ (feature) ທີ່ເປັນປັດໄຈຫຼັກຕໍ່ຜົນການຮຽນ.</p>
+                <p>ວິທີການ: ຕັດຕົວແປ (feature) ທີ່ບໍ່ກ່ຽວຂ້ອງອອກ (ເຊັ່ນ: ລະຫັດນັກສຶກສາ) ເພື່ອໃຫ້ Model ປະມວນຜົນໄດ້ໄວ ແລະ
+                    ຊັດເຈນຂື້ນ.</p>
+
+
+                <div class="content">
+                    <div class="jupyter-cell">
+                        <!-- Input Section -->
+                        <div class="input-container">
+                            <div class="prompt input-prompt">In [1]:</div>
+                            <div class="code-area">
+                                # ****** ສ້າງຄວາມສຳພັນຂອງແຕ່ລະ feature (Correlation matrix) ***********
+                                corr = df.corr(numeric_only=True)
+                                plt.figure(figsize=(10, 8))
+                                # Heatmap with values inside cells
+                                sns.heatmap(
+                                corr,
+                                annot=True, # show numbers
+                                fmt=".2f", # 2 decimal places
+                                cmap="RdYlGn", # red → green scale
+                                vmin=-1, vmax=1, # fix correlation range
+                                linewidths=0.5, # grid lines
+                                square=True # make cells square
+                                )
+
+                                plt.title("Correlation Matrix")
+                                plt.xticks(rotation=90)
+                                plt.yticks(rotation=0)
+                                plt.tight_layout()
+
+                                plt.show()
+                            </div>
+
+
+                        </div>
+
+                        <div class="output-container">
+                            <div class="prompt output-prompt">Out [1]:</div>
+                            <div class="output-area">
+                                <img src="image/correla.png">
+                            </div><br><br><br><br><br><br><br>
+                            ຕາມການສັງເກດ ກຣາບ ເທິງນີ້ເຫັນວ່າ feature ທີ່ສຳຄັນ (ພົວພັນ) ກັບເກຣດທ້າຍພາກຮຽນແມ່ນ:<br>
+                            1. ການຮຽນ (ຈ.ນ ຊົ່ວໂມງຮຽນ) ຕໍ່ອາທິດ (65%) <br>
+                            2. ຄະແນນກາງພາກຮຽນ (47%) <br>
+                            3. ການຂື້ນຫ້ອງຮຽນ (ມາຮຽນ) ປົກກະຕິ (27%) <br>
+                            4. ຄະແນນສ່ວນຮ່ວມໃນຫ້ອງຮຽນ (4%)
+                            5. ຄະແນນສະເລ່ຍ (GPA) ປີຜ່ານມາ (3%)
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+            </details>
+
+            <details class="modern-details">
+                <summary>5. Model Building</summary>
+                <p>ກິດຈະກຳ: ນຳຂໍ້ມູນທີ່ກຽມແລ້ວໄປປ້ອນໃຫ້ Algorithms ຮຽນຮູ້ເພື່ອສ້າງແບບຈຳລອງ.</p>
+                <p>ເຄື່ອງມື: ໃຊ້ Algorithms ທີ່ນິຍົມ ເຊັ່ນ: Decision Tree, Random Forest, ແລະ Extra Tree.</p>
+            </details>
+
+            <details class="modern-details">
+                <summary>6. Model Evaluation</summary>
+                <p>ກິດຈະກຳ: ວັດແທກປະສິດທິພາບ ແລະ ຄວາມຊັດເຈນຂອງ Model ທີ່ສ້າງຂຶ້ນ.</p>
+                <p>ຕົວຊີ້ວັດ: ທົດສອບດ້ວຍຊຸດຂໍ້ມູນ (Test Set) ເພື່ອຫາຄ່າ Accuracy, Precision, Recall ແລະ F1-Score.</p>
+            </details>
+            <details class="modern-details">
+                <summary>7. Result Analysis</summary>
+                <p>ກິດຈະກຳ: ແປຜົນການພະຍາກອນ ແລະ ສະຫຼຸບປັດໄຈສ່ຽງອອກມາເປັນຄວາມຮູ້.</p>
+                <p>ຜົນໄດ້ຮັບ: ໄດ້ຂໍ້ສະຫຼຸບ (ເຊັ່ນ: ພຶດຕິກຳໃດພາໃຫ້ເສັງຕົກ)
+                    ເພື່ອໃຫ້ອາຈານນຳໄປໃຊ້ວາງແຜນຊ່ວຍເຫຼືອນັກສຶກສາໄດ້ທັນການ.</p>
+            </details>
+
+        </div>
+
+        <!-- Slide 8 -->
+        <div class="slide">
+            <h2>5. Data Preprocessing</h2>
+
+            <details class="modern-details">
+                <summary>1. ການຈັດການກັບການຂາດຫາຍຂອງຂໍ້ມູນ (Missing value)</summary>
+                <div class="content">
+                    <div class="jupyter-cell">
+                        <!-- Input Section -->
+                        <div class="input-container">
+                            <div class="prompt input-prompt">In [1]:</div>
+                            <div class="code-area">
+                                info_df = pd.DataFrame({
+                                "Column": df.columns,
+                                "Non-Null Count": df.count().values,
+                                "Dtype": df.dtypes.values
+                                })
+                                show(info_df)
+                            </div>
+                        </div>
+
+                        <!-- Output Section -->
+                        <div class="output-container">
+                            <div class="prompt output-prompt">Out [1]:</div>
+                            <div class="output-area">
+                                <img src="image/missingValue.png">
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </details>
+
+
+
+            <details class="modern-details">
+                <summary>2. ການກວດສອບຂໍ້ມູນຜິດປົກກະຕິ (Outlier)</summary>
+                <div class="content">
+                    <div class="jupyter-cell">
+                        <!-- Input Section -->
+                        <div class="input-container">
+                            <div class="prompt input-prompt">In [1]:</div>
+                            <div class="code-area">
+                                # boxplot ເພື່ອເບີ່ງ outlier (ຄ່າຜິດປົກກະຕິ)
+                                plt.figure(figsize=(14, 8))
+                                df.boxplot()
+                            </div>
+                        </div>
+
+                        <!-- Output Section -->
+                        <div class="output-container">
+                            <div class="prompt output-prompt">Out [1]:</div>
+                            <div class="output-area">
+                                <img src="image/outlier.png">
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </details>
+            <details class="modern-details">
+                <summary>2.1 ກວດເບີ່ງລະອຽດຂອງ feature ທີ່ມີຄ່າຜິດປົກກະຕິ (Outlier) ແບບ plot - final_score</summary>
+                <div class="content">
+                    <div class="jupyter-cell">
+                        <!-- Input Section -->
+                        <div class="input-container">
+                            <div class="prompt input-prompt">In [1]:</div>
+                            <div class="code-area">
+                                #plot ລາຍລະອຽດຂອງ outlier [final_exam_score]
+                                cols = ['final_score']
+
+                                ax = df.boxplot(column=cols, figsize=(8,6))
+
+                                for i, col in enumerate(cols, start=1):
+
+                                # Q1, Q3, IQR
+                                q1 = df[col].quantile(0.25)
+                                q3 = df[col].quantile(0.75)
+                                iqr = q3 - q1
+
+                                # bounds
+                                lower = q1 - 1.5 * iqr
+                                upper = q3 + 1.5 * iqr
+
+                                # outliers
+                                outliers = df[(df[col] < lower) | (df[col]> upper)][col]
+                                    """
+                                    ສິ່ງຄວນເອົາໃຈໃສ່
+                                    Outliers are usually defined as:
+                                    x < Q1−1.5(IQR) or x> Q3+1.5(IQR)
+                                        """
+
+                                        # show bound values
+                                        ax.text(i, lower, f'LB={lower:.1f}', ha='center')
+                                        ax.text(i, upper, f'UB={upper:.1f}', ha='center')
+
+                                        # show outlier values
+                                        for y in outliers:
+                                        ax.text(i + 0.05, y, f'{y:.1f}', fontsize=8)
+
+                                        plt.show()
+                            </div>
+                        </div>
+
+                        <!-- Output Section -->
+                        <div class="output-container">
+                            <div class="prompt output-prompt">Out [1]:</div>
+                            <div class="output-area">
+                                <img src="image/outlierD.png">
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </details>
+            <details class="modern-details">
+                <summary>2.2 ກວດເບີ່ງລະອຽດຂອງ feature ທີ່ມີຄ່າຜິດປົກກະຕິ (Outlier) ແບບຕາຕະລາງ- final_score</summary>
+                <div class="content">
+                    <div class="jupyter-cell">
+                        <!-- Input Section -->
+                        <div class="input-container">
+                            <div class="prompt input-prompt">In [1]:</div>
+                            <div class="code-area">
+                                #ນັບຈຳນວນຄ່າທີ່ນ້ອຍກວ່າ UB(Under Bound 16.5)
+                                show(df[df['final_score'] < 16.5][['id', 'final_score' , 'final_grade' ]]) </div>
+                            </div>
+
+                            <!-- Output Section -->
+                            <div class="output-container">
+                                <div class="prompt output-prompt">Out [1]:</div>
+                                <div class="output-area">
+                                    <img src="image/outlierDetail.png">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+            </details>
+
+            <details class="modern-details">
+                <summary>2.3 ຄຳນວນ outlier ເປັນ % - final_score</summary>
+                <div class="content">
+                    <div class="jupyter-cell">
+                        <!-- Input Section -->
+                        <div class="input-container">
+                            <div class="prompt input-prompt">In [1]:</div>
+                            <div class="code-area">
+                                # ຄຳນວນ outlier ອອກເປັນ %
+                                outlier_count = df[df['final_score'] < 16.5].shape[0] total_count=df.shape[0]
+                                    percentage=(outlier_count / total_count) * 100 print('Total record: ', total_count)
+                                print(' Outlier record: ', outlier_count, ' (', round(percentage, 4), '%)' ) </div>
+                            </div>
+
+                            <!-- Output Section -->
+                            <div class="output-container">
+                                <div class="prompt output-prompt">Out [1]:</div>
+                                <div class="output-area">
+                                    Total record: 5200
+                                    Outlier record: 5 ( 0.0962 %)
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+            </details>
+
+
+
+            <details class="modern-details">
+                <summary>3. ການແປຂໍ້ມູນຈາກຂໍ້ຄວາມມາເປັນຕົວເລກ (Endcode)</summary>
+                <div class="content">
+                    <div class="jupyter-cell">
+                        <!-- Input Section -->
+                        <div class="input-container">
+                            <div class="prompt input-prompt">In [1]:</div>
+                            <div class="code-area">
+                                # ເຮັດການຜັນປ່ຽນ: p_income (low=0, Medium=1, High=2), p_edu (High School=0, Bachelor=1,
+                                Master=2), str_level (Low=0, Medium=1, High=2)
+
+                                cols = ['p_income', 'p_edu', 'str_level']
+
+                                df[cols] = df[cols].replace({
+                                'High': 2,
+                                'Master': 2,
+                                'Medium': 1,
+                                'Low': 0,
+                                'High School':0,
+                                'Bachelor': 1
+                                })
+
+                                show(df[['p_income','p_edu', 'str_level']])
+                            </div>
+                        </div>
+
+                        <!-- Output Section -->
+                        <div class="output-container">
+                            <div class="prompt output-prompt">Out [1]:</div>
+                            <div class="output-area">
+                                <img src="image/transform.png">
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </details>
+
+            <details class="modern-details">
+                <summary>4. ການເຮັດ Normalization / Standardization</summary>
+                <div class="content">
+                    ໃນຊຸດຂໍ້ມູນທີ່ໄດ້ມາ ຈະເຫັນວ່າແຕ່ລະ feature, ມາດຕະຖານຕົວເລກມັນຫ່າງກັນຫຼາຍເຊັ່ນ: Grade (0-4), ແຕ່
+                    score (0-100), ສະນັ້ນຕ້ອງມີເຮັດ Normalization,
+                    ແຕ່ເນື່ອງຈາກ models ທີ່ເຮົາຈະນຳມາເຮັດການພະຍາກອນນັ້ນບໍ່ຈຳເປັນຕ້ອງເຮັດ Normalization.
+                    ສະນັ້ນໃນການຂຸດຄົ້ນຂໍ້ມູນນີ້ ຈີ່ງບໍ່ໄດ້ເຮັດ Normalization<br>
+                    <b>ໝາຍເຫດ:</b> Models ທີ່ເລືອກແມ່ນ: RandomForestClassifier, ExtraTreesClassifier ແລະ
+                    DecisionTreeClassifier
+
+                </div>
+
+            </details>
+
+
+
+        </div>
+
+
+        <!-- Slide 9 -->
+        <div class="slide">
+            <h2>6. Algorithm ທີ່ໃຊ້</h2>
+            <div class="panel-container">
+
+                <div class="panel-card card-teal" style="width: 580px; padding: 10px;">
+                    <div class="card-day">Data Mining Task</div>
+                    <div class="card-number" style="font-size: 35px;">Classification</div>
+                    <p class="card-text">Predict the final grade of students (e.g., A, B, C or Pass/Fail)
+
+                    <pre><b>X (Features):</b> [
+                'study_week', 
+            'mid_score', 
+            'att_rate', 
+            'part_score', 
+            'pre_GPA' 
+    ]
+        </pre>
+                    <pre>
+            <b>y (Target):</b> ['final_grade']</pre>
+
+                    </p>
+                </div>
+
+                <!-- ກາດທີ 2: ແປງຄຳສະກົດຜິດ (Learning) -->
+                <div class="panel-card card-orange" style="width: 580px;">
+                    <div class="card-day">Learning Technique</div>
+                    <div class="card-number" style="font-size: 35px;">Supervised Learning.</div>
+
+                    <p class="card-text">
+
+
+                    <details class="modern-details">
+                        <summary>RandomForestClassifier:</summary>
+                        <div class="content">
+                            <ol>
+                                <li>ເປັນ algorithm ທີ່ນິຍົມໃຊ້ ໃນສາຍ ການຈັດຈຳແນກຂໍ້ມູນ (data classification)</li>
+                                <li>ມີຄວາມຊັດເຈນ (ເມັ້ນຢຳ) ສູງ</li>
+                                <li>ຫຼຸດຜ່ອນການມີ overfitting</li>
+                                <li>ເໝາະສົມກັບຊຸດຂໍ້ມູນການສຶກສາ</li>
+                            </ol>
+
+                        </div>
+
+                    </details>
+
+                    <details class="modern-details">
+                        <summary>
+                            ExtraTreesClassifier:
+                        </summary>
+                        <div class="content">
+                            <ol>
+                                <li>Faster training, Good Performance</li>
+                                <li>ມີຄວາມສະຖຽນຕໍ່ວິທີການເຮັດຈັດຈຳແນກຂໍ້ມູນ (Stable for classification tasks)</li>
+                                <li>ຮອງຮັບຊຸດຂໍ້ມູນຈຳນວນຫຼາຍ (large datasets)</li>
+                                <li>ມີຄວາມສະຖຽນຕໍ່ຂໍ້ມູນຜິດປົກກະຕິ (Robust to outliers)</li>
+                            </ol>
+                        </div>
+
+                    </details>
+                    <details class="modern-details">
+                        <summary>
+                            DecisionTreeClassifier:
+                        </summary>
+                        <div class="content">
+                            <ol>
+                                <li>ເປັນ algorithm ທີ່ງ່າຍ (ເຂົ້າໃຈງ່າຍ)</li>
+                                <li>ມີຄວາມໄວສູງຕໍ່ຊຸດຂໍ້ມູນທີ່ບໍ່ຫຼາຍ</li>
+                            </ol>
+                        </div>
+
+                    </details>
+
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Slide 10 -->
+        <div class="slide">
+            <h2>7. ການສ້າງແບບຈຳລອງ (Model building) - Supervised Learining</h2>
+
+            <details class="modern-details">
+                <summary>
+                    ຮູບແບບ model (Tree-Based Models)
+                </summary>
+                <div class="content">
+                    <ol>
+                        <li>
+                            <b>RandomForest</b> <br>
+                            ໃຊ້ Bootstrap ແລະ ເລືອກຄຸນລັກສະນະແບບສຸ່ມເພື່ອສ້າງຕົ້ນໄມ້ຫຼາຍຕົ້ນ.
+                        </li>
+                        <li>
+                            <b>ExtraTrees</b> <br>
+                            ເພີ່ມຄວາມສຸ່ມຫຼາຍຂຶ້ນໂດຍການສຸ່ມຈຸດແບ່ງ (Thresholds) ເຮັດໃຫ້ເຮັດວຽກໄວຂຶ້ນ.
+                        </li>
+                        <li>
+                            <b>Decision Tree</b> <br>
+                            DecisionTreeClassifier: ແບບຈຳລອງພື້ນຖານທີ່ແບ່ງຂໍ້ມູນຕາມເງື່ອນໄຂ (If-Then) ເພື່ອຕັດສິນໃຈ.
+                            ເຮັດວຽກໄວ ແລະ ເຂົ້າໃຈງ່າຍ ແຕ່ມີຄວາມສ່ຽງຕໍ່ການເກີດ Overfitting ສູງ.<br>
+                            Gini=1-∑p<sub>i</sub><sup>2</sup>
+                        </li>
+                    </ol>
+                </div>
+
+            </details>
+
+            <details class="modern-details">
+                <summary>
+                    ຂັ້ນຕອນ 1. ການແບ່ງຂໍ້ມູນເພື່ອຝືກສອນ ແລະ ທົດສອບ (Train/Test split)
+                </summary>
+                <div class="content">
+                    <ul>
+                        <li>80% ສຳລັບສອນ (ຝຶກ)</li>
+                        <li>20% ສຳລັບທົດສອບ</li>
+                    </ul>
+                    <pre>
+                    X_train, X_test, y_train, y_test = train_test_split(
+                        X,
+                        y,
+                        test_size=0.2,
+                        random_state=42,
+                        stratify=y
+                    )
+                    </pre>
+                </div>
+
+            </details>
+
+            <details class="modern-details">
+                <summary>
+                    ຂັ້ນຕອນ 2. ການປັບ Hyperparameters ເພື່ອຄວາມຊັດເຈນ
+                </summary>
+                <div class="content">
+
+                    <div class="jupyter-cell">
+                        <!-- Input Section -->
+                        <div class="input-container">
+                            <div class="prompt input-prompt">In [1]:</div>
+                            <div class="code-area">
+                                # 1. ສ້າງໂມເດລຕັ້ງຕົ້ນ
+                                rf = RandomForestClassifier(random_state=42) ຫຼື<br>
+                                rf = ExtraTreesClassifier(random_state=42) ຫຼື<br>
+                                rf = DecisionTreeClassifier(random_state=42) ຫຼື<br>
+
+                                # 2. ກຳນົດຂອບເຂດຄ່າ (Hyperparameter Grid) ທີ່ເຮົາຢາກໃຫ້ມັນສຸ່ມ
+                                param_distributions = {
+                                'n_estimators': [100, 200, 300, 400, 500],
+                                'max_depth': [None, 10, 20, 30],
+                                'max_features': ['sqrt', 'log2', None],
+                                'min_samples_split': [2, 5, 10]
+                                }
+
+                                # 3. ຕັ້ງຄ່າການສຸ່ມຄົ້ນຫາ (ສຸ່ມມາລອງ 10 ແບບ, ແບ່ງຂໍ້ມູນທົດສອບ 3 ສ່ວນ ຫຼື
+                                Cross-Validation)
+                                random_search = RandomizedSearchCV(
+                                estimator=rf,
+                                param_distributions=param_distributions,
+                                n_iter=10, # ສຸ່ມທົດລອງ 10 ຮູບແບບ
+                                cv=3, # ເຮັດ 3-Fold Cross Validation
+                                random_state=42,
+                                n_jobs=-1 # ໃຊ້ CPU ທຸກ Core ທີ່ມີເພື່ອຄວາມໄວ
+                                )
+
+                                # 4. ສັ່ງໃຫ້ລະບົບເລີ່ມຄົ້ນຫາ (ແທນ X_train, y_train ດ້ວຍຂໍ້ມູນຂອງເຈົ້າ)
+                                random_search.fit(X_train, y_train)
+
+                                # 5. ດຶງຄ່າທີ່ດີທີ່ສຸດອອກມາເບິ່ງ
+                                print("ຄ່າ Hyperparameters ທີ່ດີທີ່ສຸດ:", random_search.best_params_)
+
+                                # 6. ນຳໂມເດລທີ່ດີທີ່ສຸດໄປໃຊ້ງານ
+                                best_rf_model = random_search.best_estimator_
+
+                            </div>
+                        </div>
+
+
+                        <!-- Output Section -->
+                        <div class="output-container">
+                            <div class="prompt output-prompt">Out [1]:</div>
+                            <div class="output-area">
+                                ຄ່າ Hyperparameters ທີ່ດີທີ່ສຸດສຳລັບ:<br>
+                                <b>RandomForestClassifier</b>
+                                <pre>
+                                                            n_estimators = 500, 
+                                                            min_samples_split = 2, 
+                                                            max_features = 'log2', 
+                                                            max_depth = None
+                                </pre><br>
+                                <b>ExtraTreesClassifier</b>
+                                <pre>
+                                                            n_estimators = 500, 
+                                                            min_samples_split = 2, 
+                                                            max_features = 'log2', 
+                                                            max_depth = None
+                                </pre><br>
+                                <b>DecisionTreeClassifier</b>
+                                <pre>
+                                                            random_state=42
+                                </pre>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </details>
+
+
+            <details class="modern-details">
+                <summary>
+                    ຂັ້ນຕອນ 3. ການສ້າງ ແລະ ຝຶກສອນ (Create & Train)
+                </summary>
+                <div class="content">
+                    <ul>
+                        <li>1. Create Model<br>
+                            ກຳນົດ ແລະ ສ້າງ Object ຂອງແບບຈຳລອງ ໂດຍເລືອກໃຊ້ລະຫວ່າງ DecisionTree, RandomForest, ຫຼື
+                            ExtraTrees ຕາມຄວາມເໝາະສົມ.</li>
+                        <li>2. Set Parameter<br>
+                            ກຳນົດຄ່າເລີ່ມຕົ້ນ (Default Hyperparameters) ເຊັ່ນ: random_state
+                            ເພື່ອໃຫ້ຜົນການທົດລອງອອກຄືເກົ່າທຸກຄັ້ງ.</li>
+                        <li>
+                            3. Model Training<br>
+                            ນຳໃຊ້ຄຳສັ່ງ model.fit(X_train, y_train) ເພື່ອຝຶກສອນແບບຈຳລອງໃຫ້ຮຽນຮູ້ຈາກຂໍ້ມູນ Training
+                            ທີ່ແບ່ງໄວ້.
+                        </li>
+                    </ul>
+                    <pre>
+                    # *************************** Create Random Forest model *******************
+                        modelForest = RandomForestClassifier(
+                            n_estimators = 500, 
+                            min_samples_split = 2, 
+                            max_features = 'log2', 
+                            max_depth = None
+                        )
+
+                        # Train model
+                        modelForest.fit(X_train, y_train)
+
+                        # *************************** ExtraTrees model *******************
+                            modelET = ExtraTreesClassifier(
+                                n_estimators = 500, 
+                                min_samples_split = 2, 
+                                max_features = 'log2', 
+                                max_depth = None
+                            )
+
+                            # Train model
+                            modelET.fit(X_train, y_train)
+
+
+                            # *************************** DecisionTreeClassifier model *******************
+
+                            modelDT = DecisionTreeClassifier(
+                                    random_state=42
+                                )
+
+                                # Train model
+                                modelDT.fit(X_train, y_train)
+
+                    </pre>
+                </div>
+
+            </details>
+
+
+            <details class="modern-details">
+                <summary>
+                    ຂັ້ນຕອນ 4. ການທົດສອບຄວາມຊັດເຈນຂອງແບບຈຳລອງ (Model Testing Accuracy)
+                </summary>
+                <div class="content">
+                    <ol>
+                        <li>RandomForestClassifier:
+                            <div class="progress1">
+                                <div class="progress-bar1" style="width: 73.02%;">
+                                    73.02%
+                                    <!-- 0.7302631578947368 -->
+                                </div>
+                            </div>
+                        </li><br><br>
+                        <li>
+                            ExtraTreesClassifier:
+                            <div class="progress1">
+                                <div class="progress-bar1" style="width: 74.7%;">
+                                    74.7%
+                                    <!--0.7470095693779905 -->
+                                </div>
+                            </div>
+
+                        </li><br><br>
+                        <li>DecisionTreeClassifier:
+                            <div class="progress1">
+                                <div class="progress-bar1" style="width: 65.37%;">
+                                    65.37%
+                                    <!-- 0.6537081339712919 -->
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </details>
+
+
+
+        </div>
+
+        <!-- Slide 11 -->
+        <div class="slide">
+            <h2>8. ການປະເມີນຜົນ (Evaluation)</h2>
+            <details class="modern-details">
+                <summary>ຜ່ານຂັ້ນຕອນການສ້າງຈຳລອງ (Model) ມາກ່ອນໜ້ານີ້ ສາມາດສະຫຼຸບຜົນການປະເມີນດາ Models ໄດ້ດັ່ງນີ້:
+                </summary>
+                <div class="content">
+                    <div class="containerLR" style="font-size: 20px;">
+                        <div class="leftL" style="width: 50%;">
+                            <h4>RandomForestClassifier</h4>
+                            <div class="progress1">
+                                <div class="progress-bar1" style="width: 73.02%;">
+                                    73.02%
+                                    <!-- 0.7302631578947368 -->
+                                </div>
+                            </div>
+                            <br>
+                            <table border="1" style="border-collapse: collapse; width: 100%; font-family: sans-serif;">
+                                <thead>
+                                    <tr style="background-color: #008080; color: white; text-align: left;">
+                                        <th style="padding: 8px;">Class</th>
+                                        <th style="padding: 8px;">precision</th>
+                                        <th style="padding: 8px;">recall</th>
+                                        <th style="padding: 8px;">f1-Score</th>
+                                        <th style="padding: 8px;">support</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">A</td>
+                                        <td style="padding: 8px;">87%</td>
+                                        <td style="padding: 8px;">94%</td>
+                                        <td style="padding: 8px;">90%</td>
+                                        <td style="padding: 8px;">418</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">B</td>
+                                        <td style="padding: 8px;">73%</td>
+                                        <td style="padding: 8px;">69%</td>
+                                        <td style="padding: 8px;">71%</td>
+                                        <td style="padding: 8px;">418</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">C</td>
+                                        <td style="padding: 8px;">65%</td>
+                                        <td style="padding: 8px;">55%</td>
+                                        <td style="padding: 8px;">56%</td>
+                                        <td style="padding: 8px;">418</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">D</td>
+                                        <td style="padding: 8px;">74%</td>
+                                        <td style="padding: 8px;">74%</td>
+                                        <td style="padding: 8px;">74%</td>
+                                        <td style="padding: 8px;">418</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">macro avg</td>
+                                        <td style="padding: 8px;">73%</td>
+                                        <td style="padding: 8px;">73%</td>
+                                        <td style="padding: 8px;">73%</td>
+                                        <td style="padding: 8px;">1672</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">weighted avg</td>
+                                        <td style="padding: 8px;">73%</td>
+                                        <td style="padding: 8px;">73%</td>
+                                        <td style="padding: 8px;">73%</td>
+                                        <td style="padding: 8px;">1672</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="leftR" style="width: 50%;">
+                            <h4>ExtraTreesClassifier</h4>
+                            <div class="progress1">
+                                <div class="progress-bar1" style="width: 74.7%;">
+                                    74.7%
+                                    <!-- 0.7302631578947368 -->
+                                </div>
+                            </div><br>
+                            <table border="1" style="border-collapse: collapse; width: 100%; font-family: sans-serif;">
+                                <thead>
+                                    <tr style="background-color: #008080; color: white; text-align: left;">
+                                        <th style="padding: 8px;">Class</th>
+                                        <th style="padding: 8px;">precision</th>
+                                        <th style="padding: 8px;">recall</th>
+                                        <th style="padding: 8px;">f1-Score</th>
+                                        <th style="padding: 8px;">support</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">A</td>
+                                        <td style="padding: 8px;">89%</td>
+                                        <td style="padding: 8px;">95%</td>
+                                        <td style="padding: 8px;">92%</td>
+                                        <td style="padding: 8px;">418</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">B</td>
+                                        <td style="padding: 8px;">75%</td>
+                                        <td style="padding: 8px;">72%</td>
+                                        <td style="padding: 8px;">73%</td>
+                                        <td style="padding: 8px;">418</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">C</td>
+                                        <td style="padding: 8px;">59%</td>
+                                        <td style="padding: 8px;">56%</td>
+                                        <td style="padding: 8px;">58%</td>
+                                        <td style="padding: 8px;">418</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">D</td>
+                                        <td style="padding: 8px;">74%</td>
+                                        <td style="padding: 8px;">75%</td>
+                                        <td style="padding: 8px;">75%</td>
+                                        <td style="padding: 8px;">418</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">macro avg</td>
+                                        <td style="padding: 8px;">74%</td>
+                                        <td style="padding: 8px;">75%</td>
+                                        <td style="padding: 8px;">74%</td>
+                                        <td style="padding: 8px;">1672</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">weighted avg</td>
+                                        <td style="padding: 8px;">74%</td>
+                                        <td style="padding: 8px;">75%</td>
+                                        <td style="padding: 8px;">74%</td>
+                                        <td style="padding: 8px;">1672</td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <hr>
+                    <h4>DecisionTreeClassifier</h4>
+                    <div class="progress1">
+                        <div class="progress-bar1" style="width: 65.37%;">
+                            65.37%
+                        </div>
+                    </div><br>
+                    <table border="1" style="border-collapse: collapse; width: 100%; font-family: sans-serif;">
+                        <thead>
+                            <tr style="background-color: #008080; color: white; text-align: left;">
+                                <th style="padding: 8px;">Class</th>
+                                <th style="padding: 8px;">precision</th>
+                                <th style="padding: 8px;">recall</th>
+                                <th style="padding: 8px;">f1-Score</th>
+                                <th style="padding: 8px;">support</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">A</td>
+                                <td style="padding: 8px;">86%</td>
+                                <td style="padding: 8px;">89%</td>
+                                <td style="padding: 8px;">87%</td>
+                                <td style="padding: 8px;">418</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">B</td>
+                                <td style="padding: 8px;">63%</td>
+                                <td style="padding: 8px;">59%</td>
+                                <td style="padding: 8px;">61%</td>
+                                <td style="padding: 8px;">418</td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">C</td>
+                                <td style="padding: 8px;">46%</td>
+                                <td style="padding: 8px;">48%</td>
+                                <td style="padding: 8px;">47%</td>
+                                <td style="padding: 8px;">418</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">D</td>
+                                <td style="padding: 8px;">66%</td>
+                                <td style="padding: 8px;">66%</td>
+                                <td style="padding: 8px;">66%</td>
+                                <td style="padding: 8px;">418</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">macro avg</td>
+                                <td style="padding: 8px;">65%</td>
+                                <td style="padding: 8px;">65%</td>
+                                <td style="padding: 8px;">65%</td>
+                                <td style="padding: 8px;">1672</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">weighted avg</td>
+                                <td style="padding: 8px;">65%</td>
+                                <td style="padding: 8px;">65%</td>
+                                <td style="padding: 8px;">65%</td>
+                                <td style="padding: 8px;">1672</td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+            </details>
+
+            <details class="modern-details">
+                <summary>Confusion Matrix</summary>
+                <div class="content">
+                    <h4>RandomForestClassifier</h4>
+                    <table border="1" style="border-collapse: collapse; width: 100%; font-family: sans-serif;">
+                        <thead>
+                            <tr style="background-color: #008080; color: white; text-align: left;">
+                                <th style="padding: 8px;">Actual/Precision</th>
+                                <th style="padding: 8px;">A</th>
+                                <th style="padding: 8px;">B</th>
+                                <th style="padding: 8px;">C</th>
+                                <th style="padding: 8px;">D</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">A</td>
+                                <td style="padding: 8px;">393</td>
+                                <td style="padding: 8px;">22</td>
+                                <td style="padding: 8px;">3</td>
+                                <td style="padding: 8px;">0</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">B</td>
+                                <td style="padding: 8px;">47</td>
+                                <td style="padding: 8px;">289</td>
+                                <td style="padding: 8px;">74</td>
+                                <td style="padding: 8px;">8</td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">C</td>
+                                <td style="padding: 8px;">10</td>
+                                <td style="padding: 8px;">77</td>
+                                <td style="padding: 8px;">231</td>
+                                <td style="padding: 8px;">100</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">D</td>
+                                <td style="padding: 8px;">1</td>
+                                <td style="padding: 8px;">8</td>
+                                <td style="padding: 8px;">101</td>
+                                <td style="padding: 8px;">308</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <hr>
+
+                    <h4>ExtraTreesClassifier </h4>
+                    <table border="1" style="border-collapse: collapse; width: 100%; font-family: sans-serif;">
+                        <thead>
+                            <tr style="background-color: #008080; color: white; text-align: left;">
+                                <th style="padding: 8px;">Actual/Precision</th>
+                                <th style="padding: 8px;">A</th>
+                                <th style="padding: 8px;">B</th>
+                                <th style="padding: 8px;">C</th>
+                                <th style="padding: 8px;">D</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">A</td>
+                                <td style="padding: 8px;">397</td>
+                                <td style="padding: 8px;">18</td>
+                                <td style="padding: 8px;">3</td>
+                                <td style="padding: 8px;">0</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">B</td>
+                                <td style="padding: 8px;">43</td>
+                                <td style="padding: 8px;">302</td>
+                                <td style="padding: 8px;">66</td>
+                                <td style="padding: 8px;">7</td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">C</td>
+                                <td style="padding: 8px;">5</td>
+                                <td style="padding: 8px;">77</td>
+                                <td style="padding: 8px;">235</td>
+                                <td style="padding: 8px;">101</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">D</td>
+                                <td style="padding: 8px;">1</td>
+                                <td style="padding: 8px;">8</td>
+                                <td style="padding: 8px;">94</td>
+                                <td style="padding: 8px;">315</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+
+                    <hr>
+
+                    <h4>DecisionTreeClassifier </h4>
+                    <table border="1" style="border-collapse: collapse; width: 100%; font-family: sans-serif;">
+                        <thead>
+                            <tr style="background-color: #008080; color: white; text-align: left;">
+                                <th style="padding: 8px;">Actual/Precision</th>
+                                <th style="padding: 8px;">A</th>
+                                <th style="padding: 8px;">B</th>
+                                <th style="padding: 8px;">C</th>
+                                <th style="padding: 8px;">D</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">A</td>
+                                <td style="padding: 8px;">371</td>
+                                <td style="padding: 8px;">37</td>
+                                <td style="padding: 8px;">10</td>
+                                <td style="padding: 8px;">0</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">B</td>
+                                <td style="padding: 8px;">49</td>
+                                <td style="padding: 8px;">274</td>
+                                <td style="padding: 8px;">102</td>
+                                <td style="padding: 8px;">20</td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">C</td>
+                                <td style="padding: 8px;">10</td>
+                                <td style="padding: 8px;">88</td>
+                                <td style="padding: 8px;">199</td>
+                                <td style="padding: 8px;">121</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center;">D</td>
+                                <td style="padding: 8px;">1</td>
+                                <td style="padding: 8px;">18</td>
+                                <td style="padding: 8px;">123</td>
+                                <td style="padding: 8px;">276</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </details>
+            <details class="modern-details">
+                <summary>Cros-Validation</summary>
+                <div class="content">
+
+                    <div class="jupyter-cell">
+                        <!-- Input Section -->
+                        <div class="input-container">
+                            <div class="prompt input-prompt">In [1]:</div>
+                            <div class="code-area">
+                                ##************** Cros-Validation*******************
+                                ## Model Random forest algorithm
+                                from sklearn.model_selection import train_test_split, cross_val_score # ເພີ່ມ
+                                cross_val_score
+                                from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
+                                from sklearn.tree import DecisionTreeClassifier
+                                from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+                                from sklearn.preprocessing import LabelEncoder
+                                from xgboost import XGBClassifier
+                                import numpy as np
+
+                                # Features
+                                X = balanced_df[['study_week',
+                                'mid_score',
+                                'att_rate',
+                                'part_score',
+                                'pre_GPA'
+                                ]]
+
+                                # Target
+                                y = balanced_df['final_grade']
+
+                                # Split train/test
+                                X_train, X_test, y_train, y_test = train_test_split(
+                                X,
+                                y,
+                                test_size=0.2,
+                                random_state=42,
+                                stratify=y
+                                )
+
+                                print('===================== 1. RandomForestClassifier =====================')
+                                # 1. ສ້າງ Model
+                                modelForest = RandomForestClassifier(
+                                n_estimators=500,
+                                min_samples_split=2,
+                                max_depth=None,
+                                max_features='log2',
+                                random_state=42
+                                )
+
+                                # ---- ເພີ່ມສ່ວນ Cross-Validation ----
+                                print("--- ກຳລັງປະມວນຜົນ 5-Fold Cross-Validation ---")
+                                cv_scores_rf = cross_val_score(modelForest, X, y, cv=5, n_jobs=-1)
+                                print(f"Accuracy ຂອງແຕ່ລະ Fold (5 Folds): {cv_scores_rf}")
+                                print(f"ຄ່າ Accuracy ສະເລ່ຍຈາກ CV (Mean CV Accuracy): {cv_scores_rf.mean():.4f}")
+                                print("---------------------------------------------")
+
+                                # Train & Predict ດ້ວຍ Holdout (Train/Test Split 80-20) ຕາມ Code ເກົ່າ
+                                modelForest.fit(X_train, y_train)
+                                y_pred = modelForest.predict(X_test)
+
+                                print("Accuracy on Test Set:", accuracy_score(y_test, y_pred))
+                                print("\nClassification Report:")
+                                print(classification_report(y_test, y_pred))
+                                print("\nConfusion Matrix:")
+                                print(confusion_matrix(y_test, y_pred))
+
+
+                                print('===================== 2. ExtraTreesClassifier =====================')
+                                # 2. ສ້າງ Model
+                                modelET = ExtraTreesClassifier(
+                                n_estimators=500,
+                                min_samples_split=2,
+                                max_depth=None,
+                                max_features='log2',
+                                random_state=42
+                                )
+
+                                # ---- ເພີ່ມສ່ວນ Cross-Validation ----
+                                print("--- ກຳລັງປະມວນຜົນ 5-Fold Cross-Validation ---")
+                                cv_scores_et = cross_val_score(modelET, X, y, cv=5, n_jobs=-1)
+                                print(f"Accuracy ຂອງແຕ່ລະ Fold (5 Folds): {cv_scores_et}")
+                                print(f"ຄ່າ Accuracy ສະເລ່ຍຈາກ CV (Mean CV Accuracy): {cv_scores_et.mean():.4f}")
+                                print("---------------------------------------------")
+
+                                # Train & Predict ດ້ວຍ Holdout
+                                modelET.fit(X_train, y_train)
+                                y_pred = modelET.predict(X_test)
+
+                                print("Accuracy on Test Set:", accuracy_score(y_test, y_pred))
+                                print("\nClassification Report:")
+                                print(classification_report(y_test, y_pred))
+                                print("\nConfusion Matrix:")
+                                print(confusion_matrix(y_test, y_pred))
+
+
+                                print('===================== 3. DecisionTreeClassifier =====================')
+                                # 3. ສ້າງ Model
+                                modelDT = DecisionTreeClassifier(
+                                random_state=42
+                                )
+
+                                # ---- ເພີ່ມສ່ວນ Cross-Validation ----
+                                print("--- ກຳລັງປະມວນຜົນ 5-Fold Cross-Validation ---")
+                                cv_scores_dt = cross_val_score(modelDT, X, y, cv=5, n_jobs=-1)
+                                print(f"Accuracy ຂອງແຕ່ລະ Fold (5 Folds): {cv_scores_dt}")
+                                print(f"ຄ່າ Accuracy ສະເລ່ຍຈາກ CV (Mean CV Accuracy): {cv_scores_dt.mean():.4f}")
+                                print("---------------------------------------------")
+
+                                # Train & Predict ດ້ວຍ Holdout
+                                modelDT.fit(X_train, y_train)
+                                y_pred = modelDT.predict(X_test)
+
+                                print("Accuracy on Test Set:", accuracy_score(y_test, y_pred))
+                                print("\nClassification Report:")
+                                print(classification_report(y_test, y_pred))
+                                print("\nConfusion Matrix:")
+                                print(confusion_matrix(y_test, y_pred))
+                            </div>
+                        </div>
+
+                        <!-- Output Section -->
+                        <div class="output-container">
+                            <div class="prompt output-prompt">Out [1]:</div>
+                            <div class="output-area">
+                                <!-- <img src="image/missingValue.png"> -->
+                                <h4>RandomForestClassifier</h4>
+                                <!-- ຈາກການປະເມີນຜົນປະສິດທິພາບຂອງໂມເດລດ້ວຍເຕັກນິກ 5-Fold Cross-Validation ພົບວ່າ
+                                ໂມເດລໃຫ້ຄ່າຄວາມຖືກຕ້ອງ (Accuracy) ສະເລ່ຍຢູ່ທີ່ 74.70% ໂດຍມີຄ່າຄວາມຖືກຕ້ອງໃນແຕ່ລະ Fold
+                                ຢູ່ລະຫວ່າງ 71.65% ຫາ 79.72% ເຊິ່ງສະແດງໃຫ້ເຫັນວ່າ ໂມເດລມີຄວາມສະຖຽນ ແລະ
+                                ສາມາດນຳໄປພະຍາກອນຂໍ້ມູນໃໝ່ໄດ້ເປັນຢ່າງດີ... -->
+
+
+                                5 Folds: [0.71650718 0.72069378 0.74102871 0.75956938 0.7972488]<br>
+                                Mean CV Accuracy: 0.7470
+                                <br>
+                                <h4>ExtraTreesClassifier</h4>
+                                5 Folds: [0.72368421 0.72667464 0.75179426 0.76495215 0.80143541]<br>
+                                Mean CV Accuracy: 0.7537 <br>
+
+                                <h4>DecisionTreeClassifier</h4>
+                                5 Folds: [0.64114833 0.65849282 0.67643541 0.68421053 0.69138756]<br>
+                                Mean CV Accuracy: 0.6703
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </details>
+        </div>
+
+        <!-- Slide 12 -->
+        <div class="slide">
+            <h2>9. ຜົນໄດ້ຮັບ (Result)</h2>
+            <details class="modern-details">
+                <summary>ສົມທຽບຄວາມຊັດເຈນ (Accuracy) ຂອງແຕ່ລະ Models</summary>
+                <div class="content">
+
+                    <div class="containerLR">
+                        <div class="leftL">
+                            <ol>
+                                <li>RandomForestClassifier:
+                                    <div class="progress1">
+                                        <div class="progress-bar1" style="width: 73.02%;">
+                                            73.02%
+                                            <!-- 0.7302631578947368 -->
+                                        </div>
+                                    </div>
+                                </li><br><br>
+                                <li>
+                                    ExtraTreesClassifier:
+                                    <div class="progress1">
+                                        <div class="progress-bar1" style="width: 74.7%;">
+                                            74.7%
+                                            <!--0.7470095693779905 -->
+                                        </div>
+                                    </div>
+
+                                </li><br><br>
+                                <li>DecisionTreeClassifier:
+                                    <div class="progress1">
+                                        <div class="progress-bar1" style="width: 65.37%;">
+                                            65.37%
+                                            <!-- 0.6537081339712919 -->
+                                        </div>
+                                    </div>
+                                </li>
+                            </ol>
+
+                            <br>
+                            <div style="display: flex; gap: 10px;">
+                                <img src="image/forest.png" style="width: 450px; height: 350px;">
+                                <img src="image/extraTree.png" style="width: 450px; height: 350px;">
+                                <img src="image/des.png" style="width: 450px; height: 350px;">
+                            </div>
+
+                        </div>
+                        <div class="rightR" style="width: 80%;">
+                            <table border="1" style="border-collapse: collapse; width: 100%; font-family: sans-serif;">
+                                <thead>
+                                    <tr style="background-color: #008080; color: white; text-align: left;">
+                                        <th style="padding: 8px;">Algorithms (Models)</th>
+                                        <th style="padding: 8px;">ຄວາມຊັດເຈນ (Accuracy)</th>
+                                        <th style="padding: 8px;">Precision (ຄວາມຊັດເຈນ)</th>
+                                        <th style="padding: 8px;">Recall (ຄວາມລະອຽດ)</th>
+                                        <th style="padding: 8px;">F1-Score (ຄ່າສະເລ່ຍຮ່ວມ)</th>
+                                        <th style="padding: 8px;">ຄ່າສະເລ່ຍລວມ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">RandomForestClassifier</td>
+                                        <td style="padding: 8px;">73.02%</td>
+                                        <td style="padding: 8px;">73%</td>
+
+                                        <td style="padding: 8px;">73%</td>
+                                        <td style="padding: 8px;">73%</td>
+                                        <td style="padding: 8px;">73%</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;"><b>ExtraTreesClassifier</b></td>
+                                        <td style="padding: 8px;">74.7%</td>
+                                        <td style="padding: 8px;">74%</td>
+
+                                        <td style="padding: 8px;">75%</td>
+                                        <td style="padding: 8px;">74%</td>
+                                        <td style="padding: 8px; color: #054e27;"><b>74.42%</b></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 8px; text-align: center;">DecisionTreeClassifier</td>
+                                        <td style="padding: 8px;">65.37%</td>
+                                        <td style="padding: 8px;">65%</td>
+
+                                        <td style="padding: 8px;">65%</td>
+                                        <td style="padding: 8px;">65%</td>
+                                        <td style="padding: 8px;">65.09%</td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <b>ສະຫຼຸບ:</b> ExtraTreesClassifier ເປັນຕົວເມີນໄດ້ສູງທີ່ສຸດ (ຄວາມຊັດເຈນ: 74.42%) <br>
+                    <b>Extra Trees (Extremely Randomized Trees)</b> ໄດ້ຮັບໄຊຊະນະໃນການທົດລອງຄັ້ງນີ້
+                    ເນື່ອງຈາກຄວາມສາມາດໃນການສ້າງຕົ້ນໄມ້ຕັດສິນໃຈແບບສຸ່ມທັງໝົດ
+                    ເຮັດໃຫ້ຫຼຸດຄ່າຄວາມຜິດພາດທີ່ເກີດຈາກຄວາມປ່ຽນແປງຂອງຂໍ້ມູນ (Variance) ໄດ້ດີທີ່ສຸດ.<br>
+                    <b>ຜົນປະໂຫຍດເພີ່ມເຕີມ:</b> ໃຊ້ເວລາໃນການປະມວນຜົນໜ້ອຍກວ່າ Random Forest ເພາະບໍ່ຕ້ອງຄິດໄລ່ຄ່າ
+                    Entropy/Gini Split ທີ່ດີທີ່ສຸດໃນທຸກໆຄັ້ງ.
+                    <br>
+                    <!-- <img src="image/CompareBarchart.png" style="width: 350px; height: 350px;"> -->
+                </div>
+            </details>
+            <details class="modern-details">
+                <summary>ສົມທຽບການຄ່າກະຕວງ (predict) ແລະ ຄ່າຕົວ (actual)</summary>
+                <div class="content">
+
+                    <div class="jupyter-cell">
+                        <!-- Input Section -->
+                        <div class="input-container">
+                            <div class="prompt input-prompt">In [1]:</div>
+                            <div class="code-area">
+                                import matplotlib.pyplot as plt
+
+                                # ================= Predictions =================
+                                y_pred_rf = modelForest.predict(X_test)
+                                y_pred_et = modelET.predict(X_test)
+                                y_pred_dt = modelDT.predict(X_test)
+
+                                # ================= Convert Grades to Numbers =================
+                                label_map = {
+                                'A': 4,
+                                'B': 3,
+                                'C': 2,
+                                'D': 1
+                                }
+
+                                # Actual
+                                y_actual = [label_map[i] for i in y_test]
+
+                                # Predicted
+                                y_rf = [label_map[i] for i in y_pred_rf]
+                                y_et = [label_map[i] for i in y_pred_et]
+                                y_dt = [label_map[i] for i in y_pred_dt]
+
+                                # ================= Plot =================
+                                plt.figure(figsize=(18,7))
+
+                                # Show only first 50 samples for readability
+                                samples = 50
+
+                                # Actual values
+                                plt.plot(
+                                y_actual[:samples],
+                                label='Actual Grade',
+                                linewidth=3
+                                )
+
+                                # Random Forest
+                                plt.plot(
+                                y_rf[:samples],
+                                label='Random Forest',
+                                linestyle='--'
+                                )
+
+                                # Extra Trees
+                                plt.plot(
+                                y_et[:samples],
+                                label='Extra Trees',
+                                linestyle='--'
+                                )
+
+                                # Decision Tree
+                                plt.plot(
+                                y_dt[:samples],
+                                label='Decision Tree',
+                                linestyle='--'
+                                )
+
+                                # ================= Labels =================
+                                plt.title('Actual vs Predicted Student Grades', fontsize=18)
+
+                                plt.xlabel('Student Test Samples', fontsize=14)
+                                plt.ylabel('Grade', fontsize=14)
+
+                                # Convert back to grade labels
+                                plt.yticks(
+                                [1,2,3,4],
+                                ['D','C','B','A']
+                                )
+
+                                plt.legend(fontsize=12)
+
+                                plt.grid(True)
+
+                                plt.show()
+                            </div>
+                        </div>
+
+                        <!-- Output Section -->
+                        <div class="output-container">
+                            <div class="prompt output-prompt">Out [1]:</div>
+                            <div class="output-area">
+                                <img src="image/predit_vs_actual.png" style="width: 1150px; height: 450px;">
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </details>
+        </div>
+
+        <!-- Slide 13 -->
+        <div class="slide">
+            <h2>10. ບັນຫາ ແລະ ອຸປະສັກ</h2>
+            <div class="label-row" style="font-size: 25px;">
+                <div class="label">1</div>
+                <div class="label-text">
+                    ຂໍ້ມູນທີ່ໄດ້ມາບໍ່ສົມດູນ (5200 records), ໄດ້ປັບໃຫ້ສົມດູນ ກາຍເປັນ 8360 records
+                </div>
+            </div>
+            <div class="label-row" style="font-size: 25px;">
+                <div class="label">2</div>
+                <div class="label-text">
+                    ໄດເຮັດການຜັນປ່ຽນບາງຂໍ້ມູນຈາກ category ເປັນຕົວເລກ, ແຕ່ສຸດທ້າຍບໍ່ແມ່ນ feature ທີ່ສຳຄັນ (important
+                    Feature). ເສຍເວລາການຜັນປ່ຽນ
+                </div>
+            </div>
+            <div class="label-row" style="font-size: 25px;">
+                <div class="label">3</div>
+                <div class="label-text">
+                    ຂໍ້ມູນທີ່ໄດ້ມາ ເກືອບ 100% ທີ່ສະອາດແລ້ວ, ເຮັດໃຫ້ເຮົາບໍ່ໄດ້ທຳຄວາມສະອາດຂໍ້ມູນ.
+                    ສະນັ້ນອາດເຮັດໃຫ້ເຮົາບໍ່ມີປະສົບການໃນການທຳຄວາມສະອາດຂໍ້ມູນ
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14 -->
+        <div class="slide">
+            <h2>11. ສະຫຼຸບຜົນການສຶກສາ (Conclusion)</h2>
+            <div class="label-row" style="font-size: 25px;">
+                <div class="label">1</div>
+                <div class="label-text">
+                    ສາມາດສ້າງຈຳລອງ (Model) ໄດ້ຕາມຈຸດປະສົງ
+                </div>
+            </div>
+            <div class="label-row" style="font-size: 25px;">
+                <div class="label">2</div>
+                <div class="label-text">
+                    ແບບຈຳລອງຊ່ວຍພະຍາກອນ (predict) ໄດ້ດີ ຢູ່ລະດັບ 74.42%
+                </div>
+            </div>
+            <div class="label-row" style="font-size: 25px;">
+                <div class="label">3</div>
+                <div class="label-text">
+                    ໄດ້ປະສົບການຫຼາຍທີ່ສຸດຕໍ່ກັບການເຮັດ mini project ໃນຄັ້ງນີ້ ແລະ
+                    ຈະໄປຜັນຂະຫຍາຍຕໍ່ໃນວຽກງານທີ່ຕົນເອງຮັບຜິດຊອບ
+                </div>
+            </div>
+
+            <div class="label-row" style="font-size: 25px;">
+                <div class="label">4</div>
+                <div class="label-text">
+                    <img src="image/impor.png" style="width: 750px; height: 650px;">
+                </div>
+            </div>
+        </div>
+        <!-- Slide 15 -->
+        <div class="slide">
+            <h2>12. ຂໍ້ສະເໜີແນະ (Future works)</h2>
+            <div class="label-row" style="font-size: 25px;">
+                <div class="label">1</div>
+                <div class="label-text">
+                    ສະເໜີເອົາຂໍ້ມູນຕົວຈິງ ມາເຮັດການພະຍາກອນ ເພື່ອສາມາດເຫັນ ແລະ ຕັດສິນບັນຫາໄດ້ ຕາມຄວາມຈິງ
+                </div>
+            </div>
+            <div class="label-row" style="font-size: 25px;">
+                <div class="label">2</div>
+                <div class="label-text">
+                    ເພີ່ມ ຈຳນວນຂໍ້ມູນໃຫ້ຫຼາຍເທົ່າທີ່ເປັນໄປໄດ້ ເພື່ອເພີ່ມປະສິດທິພາບ ໃນການພະຍາກອນຕື່ມ
+                </div>
+            </div>
+            <div class="label-row" style="font-size: 25px;">
+                <div class="label">3</div>
+                <div class="label-text">
+                    ຄວນທົດລອງໃຊ້ຫຼາຍ model ກວ່ານີ້ ເພື່ອປະເມີນປະສິດທິພາບຂອງແຕ່ລະ model
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <center>
+                <h1>ຈົບ, ຂອບໃຈ</h1>
+                <h1>ຖາມ & ຕອບ</h1>
+            </center>
+        </div>
+
+
+    </div>
+
+
+
+    <div class="controls">
+        <button onclick="changeSlide(-1)">
+            🞀 ກັບຄືນ</button>
+        <!-- ⏪⏩ -->
+        <button onclick="changeSlide(1)">ຕໍ່ໄປ 🞂</button>
+    </div>
+
+    <div class="slide-number" id="slide-num">1 / 11</div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progress-bar');
+        const slideNumDisplay = document.getElementById('slide-num');
+
+        function showSlide(index, direction = "next") {
+
+            // Remove active + animation classes
+            slides.forEach(s => {
+                s.classList.remove(
+                    'active',
+                    'slide-next',
+                    'slide-back'
+                );
+            });
+
+            // Update current slide index
+            if (index >= slides.length) currentSlide = 0;
+            else if (index < 0) currentSlide = slides.length - 1;
+            else currentSlide = index;
+
+            // Show current slide
+            const current = slides[currentSlide];
+            current.classList.add('active');
+
+            // Add animation direction
+            if (direction === "next") {
+                current.classList.add('slide-next');
+            } else {
+                current.classList.add('slide-back');
+            }
+
+            // Update Progress Bar
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+
+            // Update Slide Number
+            slideNumDisplay.innerText =
+                `${currentSlide + 1} / ${slides.length}`;
+        }
+
+        function changeSlide(step) {
+            if (step > 0) {
+                showSlide(currentSlide + step, "next");
+            } else {
+                showSlide(currentSlide + step, "back");
+            }
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "ArrowRight") changeSlide(1);
+            if (e.key === "ArrowLeft") changeSlide(-1);
+        });
+
+        // First slide
+        showSlide(0, "next");
+
+
+        // MINIMIZE
+        function toggleMinimize(button) {
+
+            const panel =
+                button.closest(".st-panel");
+
+            // panel.classList.toggle("minimized");
+            if (panel.classList.toggle("minimized")) {
+                button.innerHTML = "+";
+            } else {
+                button.innerHTML = "─";
+            }
+        }
+
+        // FULLSCREEN
+        function toggleFullscreen(button) {
+
+            const panel =
+                button.closest(".st-panel");
+
+            panel.classList.toggle("fullscreen");
+
+            // CHANGE ICON
+            if (panel.classList.contains("fullscreen")) {
+                // button.innerHTML = "✕";
+                // button.innerHTML = "╬";
+                button.innerHTML = "🟠";
+
+            } else {
+                // button.innerHTML = "⛶";
+                button.innerHTML = "🟢";
+
+            }
+        }
+    </script>
+
+</body>
+
+</html>
