@@ -400,7 +400,7 @@ hr {
     /* Centers the dot vertically with the text */
     gap: 8px;
     /* Adds space between the dot and the text */
-    font-family: sans-serif;
+    font-family: 'Noto Sans Lao', 'Phetsarath OT', sans-serif;
 }
 
 /* This automatically creates the dot before the text */
@@ -553,21 +553,6 @@ hr {
     border: 1px solid #ad6f5c;
 }
 
-
-
-/* Container styling */
-/* .modern-details {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    overflow: hidden;
-    transition: box-shadow 0.3s ease;
-    padding: 15px;
-    border-left: 5px solid #027235;
-    border-bottom: 2px solid #02d461;
-} */
-/* Container styling */
 .modern-details {
     background: #ffffff;
     border: 1px solid #e2e8f0;
@@ -579,6 +564,7 @@ hr {
     border-left: 5px solid #027235;
     border-bottom: 2px solid #02d461;
     padding: 15px;
+    font-family: 'Noto Sans Lao', 'Phetsarath OT', sans-serif;
 }
 
 .modern-details:hover {
@@ -698,103 +684,9 @@ hr {
     flex-direction: column;
     align-items: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'Noto Sans Lao', 'Phetsarath OT', sans-serif;
 
 }
-
-
-
-
-
-.panel-cardS {
-    background-color: #f4f7f7;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-
-    width: 151px;
-    height: 151px;
-
-    padding: 10px;
-    box-sizing: border-box;
-
-    text-align: center;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Hover effect */
-.panel-cardS:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-}
-
-/* Top border colors */
-.card-tealS {
-    border-top: 6px solid #237b76;
-}
-
-.card-blueS {
-    border-top: 6px solid #70b2bc;
-}
-
-.card-orangeS {
-    border-top: 6px solid #f1a429;
-}
-
-.card-coralS {
-    border-top: 6px solid #f18a6f;
-}
-
-.card-purpleS {
-    border-top: 6px solid #947ba7;
-}
-
-.card-green1S {
-    border-top: 6px solid #05cf42;
-}
-
-.card-green2S {
-    border-top: 6px solid #0544f2;
-}
-
-/* Day text */
-.card-dayS {
-    font-size: 10px;
-    color: #8a9a9d;
-    font-weight: bold;
-    margin: 0;
-}
-
-/* Big number */
-.card-numberS {
-    font-size: 28px;
-    font-weight: bold;
-    color: #1a5163;
-    line-height: 1;
-    margin: 2px 0;
-}
-
-/* Bottom text */
-.card-textS {
-    font-size: 10px;
-    color: #1a5163;
-    font-weight: 700;
-    line-height: 1.2;
-
-    overflow-wrap: break-word;
-    word-break: break-word;
-    margin: 0;
-}
-
-
-
-
-
-
 
 /* ເອັບເຟັກເວລາເອົາເມົ້າສ໌ໄປຊີ້ (Hover) */
 .panel-card:hover {
@@ -864,6 +756,96 @@ hr {
     /* padding: 30px;
             text-wrap:wrap;
             flex-wrap: wrap; */
+}
+
+
+
+
+
+.panel-cardS {
+    background-color: #f4f7f7;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+    width: 151px;
+    height: 151px;
+
+    padding: 10px;
+    box-sizing: border-box;
+
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'Noto Sans Lao', 'Phetsarath OT', sans-serif;
+}
+
+/* Hover effect */
+.panel-cardS:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+/* Top border colors */
+.card-tealS {
+    border-top: 6px solid #237b76;
+}
+
+.card-blueS {
+    border-top: 6px solid #70b2bc;
+}
+
+.card-orangeS {
+    border-top: 6px solid #f1a429;
+}
+
+.card-coralS {
+    border-top: 6px solid #f18a6f;
+}
+
+.card-purpleS {
+    border-top: 6px solid #947ba7;
+}
+
+.card-green1S {
+    border-top: 6px solid #05cf42;
+}
+
+.card-green2S {
+    border-top: 6px solid #0544f2;
+}
+
+/* Day text */
+.card-dayS {
+    font-size: 10px;
+    color: #8a9a9d;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Big number */
+.card-numberS {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1a5163;
+    line-height: 1;
+    margin: 2px 0;
+}
+
+/* Bottom text */
+.card-textS {
+    font-size: 10px;
+    color: #1a5163;
+    font-weight: 700;
+    line-height: 1.2;
+
+    overflow-wrap: break-word;
+    word-break: break-word;
+    margin: 0;
 }
 
 
