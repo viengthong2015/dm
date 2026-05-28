@@ -14,7 +14,7 @@
     <div class="progress" id="progress-bar"></div>
     <div class="header-container">
         <h2 class="animated-label">
-            ບົດລາຍງານໂຄງການຂະໜາດນ້ອຍ (Mini Project Report)<br>
+            ບົດລາຍງານໂຄງການຂະໜາດນ້ອຍ (Mini Project Report) - ພຶດສະພາ 2026<br>
             ການພະຍາກອນຜົນການຮຽນຂອງນັກສຶກສາ (Student Academic Performance Prediction)
         </h2>
     </div>
@@ -27,7 +27,10 @@
                 207DM111 | ຈຳນວນໜ່ວຍກິດ 3 (2-2-5) <br><br>
                 👤 ນັກສຶກສາ:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ວຽງທອງ ຈົ່ງຫວາຊົ່ງ <br><br>
                 🆔 ລະຫັດນັກສຶກສາ:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;207N0014/26 <br><br>
-                👨‍🏫 ອາຈານສອນ:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ຮ.ສ ສົມມິດ ທຸມມາລີ
+                👨‍🏫 ອາຈານສອນ:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ຮ.ສ ສົມມິດ ທຸມມາລີ <br><br>
+
+                🎓 ຮຸ່ນ:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7 (ສົກສຶກສາ 2026-2028)
+
 
             </div>
             <!-- <p class="dotText">My name is...</p> -->
@@ -444,85 +447,8 @@
                 <summary>4. Feature Selection</summary>
                 <p>ກິດຈະກຳ: ຄັດເລືອກເອົາສະເພາະຕົວແປ (feature) ທີ່ເປັນປັດໄຈຫຼັກຕໍ່ຜົນການຮຽນ.</p>
                 <p>ວິທີການ: ຕັດຕົວແປ (feature) ທີ່ບໍ່ກ່ຽວຂ້ອງອອກ (ເຊັ່ນ: ລະຫັດນັກສຶກສາ) ເພື່ອໃຫ້ Model ປະມວນຜົນໄດ້ໄວ ແລະ
-                    ຊັດເຈນຂື້ນ. code ແລະ ພາບດ້ານລຸ່ມນີ້ແມ່ນການສະແດງຂໍ້ມູນໃສ່ heatmap ເພື່ອເຫັນການພົວພັນຂອງແຕ່ລະ feature:
+                    ຊັດເຈນຂື້ນ. code ແລະ ພາບດ້ານລຸ່ມນີ້ແມ່ນການສະແດງຂໍ້ມູນໃສ່ heatmap ເພື່ອເຫັນການພົວພັນຂອງແຕ່ລະ feature
                 </p>
-
-
-                <div class="content">
-                    <div class="jupyter-cell">
-                        <!-- Input Section -->
-                        <div class="input-container">
-                            <div class="prompt input-prompt">In [1]:</div>
-                            <div class="code-area">
-                                # ****** ສ້າງຄວາມສຳພັນຂອງແຕ່ລະ feature (Correlation matrix) ***********
-                                corr = df.corr(numeric_only=True)
-                                plt.figure(figsize=(10, 8))
-                                # Heatmap with values inside cells
-                                sns.heatmap(
-                                corr,
-                                annot=True, # show numbers
-                                fmt=".2f", # 2 decimal places
-                                cmap="RdYlGn", # red → green scale
-                                vmin=-1, vmax=1, # fix correlation range
-                                linewidths=0.5, # grid lines
-                                square=True # make cells square
-                                )
-
-                                plt.title("Correlation Matrix")
-                                plt.xticks(rotation=90)
-                                plt.yticks(rotation=0)
-                                plt.tight_layout()
-
-                                plt.show()
-                            </div>
-
-
-                        </div>
-                        <br>
-                        <div class="output-container">
-                            <div class="prompt output-prompt">Out [1]:</div>
-
-                            <div style="display: flex; gap: 130px;">
-                                <div style="width: 70%;"><img src="image/correla.png"></div>
-
-                                <div style="width: 30%; display: flex; flex-direction: column; gap: 10px;">
-
-                                    <div class="panel-cardS card-tealS">
-                                        <div class="card-dayS dotText">ປັດໃຈສຳຄັນອັນ 1</div>
-                                        <div class="card-numberS">65%</div>
-                                        <p class="card-textS">ການຮຽນ (ຈ.ນ ຊົ່ວໂມງຮຽນ) ຕໍ່ອາທິດ</p>
-                                    </div>
-
-                                    <div class="panel-cardS card-coralS">
-                                        <div class="card-dayS dotText">ປັດໃຈສຳຄັນອັນ 2</div>
-                                        <div class="card-numberS">47%</div>
-                                        <p class="card-textS">ຄະແນນກາງພາກຮຽນ</p>
-                                    </div>
-
-                                    <div class="panel-cardS card-blueS">
-                                        <div class="card-dayS">ປັດໃຈສຳຄັນອັນ 3</div>
-                                        <div class="card-numberS">4%</div>
-                                        <p class="card-textS">ຄະແນນສ່ວນຮ່ວມໃນຫ້ອງຮຽນ</p>
-                                    </div>
-
-                                    <div class="panel-cardS card-purpleS">
-                                        <div class="card-dayS">ປັດໃຈສຳຄັນອັນ 4</div>
-                                        <div class="card-numberS">3%</div>
-                                        <p class="card-textS">ຄະແນນສະເລ່ຍ (GPA) ປີຜ່ານມາ</p>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-
-
 
             </details>
 
@@ -797,11 +723,11 @@
                             <div class="prompt output-prompt">Out [1]:</div>
                             <details class="modern-details" style="width: 100%;">
                                 <summary>Ouput...</summary>
-
-                                <img src="image/inbalance.png" style="width: 480px; height: 450px;"><br>
-                                <P class="dotText">ເມື່ອເຫັນວ່າ ເກຣດແຕ່ລະອັນບໍ່ສົມດູນແລ້ວ. ສະນັ້ນ
-                                    ຄວນປັບໃຫ້ມັນສົມດູນກ່ອນ.</p>
-
+                                <div style="display: flex; justify-content: center; justify-items: center;">
+                                    <img src="image/inbalance.png" style="width: 480px; height: 450px; "><br>
+                                    <P class="dotText">ເມື່ອເຫັນວ່າ ເກຣດແຕ່ລະອັນບໍ່ສົມດູນແລ້ວ. ສະນັ້ນ
+                                        ຄວນປັບໃຫ້ມັນສົມດູນກ່ອນ.</p>
+                                </div>
                             </details>
                         </div>
                     </div>
@@ -892,12 +818,13 @@
                             <div class="prompt output-prompt">Out [1]:</div>
                             <details class="modern-details" style="width: 100%;">
                                 <summary>Ouput...</summary>
-                                <!-- <div class="output-area"> -->
-                                <img src="image/balancing.png" style="width: 450px; height: 450px;"><br>
-                                <p>ຈາກ pie chart ເທິງນີ້ ເຫັນວ່າ ມີຄວາມສົມດູນກັນແລ້ວ <br><b class="dotText">ຄວນຈື່:</b>
-                                    ກ່ອນການປັບຄວາມສົມດູນ, ຊຸດຂໍ້ມູນມີ 5200 ລາຍງານ, ແຕ່ຫຼັງປັບຄວາມສົມດູນແລ້ວ
-                                    ຊຸດຂໍ້ມູນກາຍເປັນ <b>8360</b> ລາຍການ. ລາຍລະອຽດເບີ່ງຈາກຂັ້ນຕອນລຸ່ມ</p>
-                                <!-- </div> -->
+                                <div style="display: flex; flex-direction: row; align-items: center; gap: 15px;">
+                                    <img src="image/balancing.png" style="width: 450px; height: 450px;"><br>
+                                    <p>ຈາກ pie chart ຂ້າງຊ້າຍນີ້ ເຫັນວ່າ ມີຄວາມສົມດູນກັນແລ້ວ <br><b
+                                            class="dotText">ຄວນຈື່:</b>
+                                        ກ່ອນການປັບຄວາມສົມດູນ, ຊຸດຂໍ້ມູນມີ 5200 ລາຍງານ, ແຕ່ຫຼັງປັບຄວາມສົມດູນແລ້ວ
+                                        ຊຸດຂໍ້ມູນກາຍເປັນ <b>8360</b> ລາຍການ. ລາຍລະອຽດເບີ່ງຈາກຂັ້ນຕອນລຸ່ມ</p>
+                                </div>
                             </details>
                         </div>
                     </div>
@@ -936,6 +863,85 @@
 
             </details>
 
+            <details class="modern-details">
+                <summary>6. ການເລືອກຕົວປ່ຽນ (Feature Selection)</summary>
+                <p>ເມື່ອຜ່ານຂະບວນການຕ່າງໆໃນການກະກຽມຂໍ້ມູນ (data preprocessing) ເທິງນັ້ນແລ້ວ.
+                    ຂັ້ນຕອນສຸດຂອງການກະກຽມຂໍ້ມູນແມ່ນ ການເລືອກຕົວປ່ຽນທີ່ສຳຄັນ (Feature selection)</p>
+
+                <div class="content">
+                    <div class="jupyter-cell">
+                        <!-- Input Section -->
+                        <div class="input-container">
+                            <div class="prompt input-prompt">In [1]:</div>
+                            <div class="code-area">
+                                # ****** ສ້າງຄວາມສຳພັນຂອງແຕ່ລະ feature (Correlation matrix) ***********
+                                corr = df.corr(numeric_only=True)
+                                plt.figure(figsize=(10, 8))
+                                # Heatmap with values inside cells
+                                sns.heatmap(
+                                corr,
+                                annot=True, # show numbers
+                                fmt=".2f", # 2 decimal places
+                                cmap="RdYlGn", # red → green scale
+                                vmin=-1, vmax=1, # fix correlation range
+                                linewidths=0.5, # grid lines
+                                square=True # make cells square
+                                )
+
+                                plt.title("Correlation Matrix")
+                                plt.xticks(rotation=90)
+                                plt.yticks(rotation=0)
+                                plt.tight_layout()
+
+                                plt.show()
+                            </div>
+
+
+                        </div>
+                        <br>
+                        <div class="output-container">
+                            <div class="prompt output-prompt">Out [1]:</div>
+
+                            <div style="display: flex; gap: 130px; justify-content: center; justify-items: center;">
+                                <div style="width: 70%;"><img src="image/correla.png"></div>
+
+                                <div style="width: 30%; display: flex; flex-direction: column; gap: 10px;">
+
+                                    <div class="panel-cardS card-tealS">
+                                        <div class="card-dayS dotText">ປັດໃຈສຳຄັນອັນ 1</div>
+                                        <div class="card-numberS">65%</div>
+                                        <p class="card-textS">ການຮຽນ (ຈ.ນ ຊົ່ວໂມງຮຽນ) ຕໍ່ອາທິດ</p>
+                                    </div>
+
+                                    <div class="panel-cardS card-coralS">
+                                        <div class="card-dayS dotText">ປັດໃຈສຳຄັນອັນ 2</div>
+                                        <div class="card-numberS">47%</div>
+                                        <p class="card-textS">ຄະແນນກາງພາກຮຽນ</p>
+                                    </div>
+
+                                    <div class="panel-cardS card-blueS">
+                                        <div class="card-dayS">ປັດໃຈສຳຄັນອັນ 3</div>
+                                        <div class="card-numberS">4%</div>
+                                        <p class="card-textS">ຄະແນນສ່ວນຮ່ວມໃນຫ້ອງຮຽນ</p>
+                                    </div>
+
+                                    <div class="panel-cardS card-purpleS">
+                                        <div class="card-dayS">ປັດໃຈສຳຄັນອັນ 4</div>
+                                        <div class="card-numberS">3%</div>
+                                        <p class="card-textS">ຄະແນນສະເລ່ຍ (GPA) ປີຜ່ານມາ</p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </details>
+
+
+
         </div>
 
 
@@ -944,7 +950,7 @@
             <h2>6. Algorithm ທີ່ໃຊ້</h2>
             <div class="panel-container">
 
-                <div class="panel-card card-teal" style="width: 580px; padding: 10px;">
+                <div class="panel-card card-teal" style="width: 520px; padding: 10px;">
                     <div class="card-day">Data Mining Task</div>
                     <div class="card-number" style="font-size: 35px;">Classification</div>
                     <p class="card-text">Predict the final grade of students (e.g., A, B, C or Pass/Fail)</p>
@@ -971,7 +977,7 @@
 
                 </div>
 
-                <div class="panel-card card-orange" style="width: 580px;">
+                <div class="panel-card card-orange" style="width: 450px;">
                     <div class="card-day">Learning Technique</div>
                     <div class="card-number" style="font-size: 35px;">Supervised Learning.</div>
 
@@ -1022,6 +1028,20 @@
                     </p>
                 </div>
 
+                <div class="panel-card card-blue" style="width: 350px; padding: 10px;">
+                    <div class="card-day">Python</div>
+                    <div class="card-number" style="font-size: 35px;">Python's Libralies</div>
+
+                    <div style="left: 10px; display: flex; position: relative; text-align: left;">
+                        <ol>
+                            <li>pandas</li>
+                            <li>matplotlib.pyplot</li>
+                            <li>seaborn</li>
+                            <li>sklearn</li>
+                            <li>numpy</li>
+                        </ol>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1058,21 +1078,7 @@
                 <summary>
                     ຂັ້ນຕອນ 1. ການແບ່ງຂໍ້ມູນເພື່ອຝືກສອນ ແລະ ທົດສອບ (Train/Test split)
                 </summary>
-                <div class="content" style="display: flex; gap: 25px;">
-                    <!-- <div class="dotText">80% ສຳລັບສອນ (ຝຶກ)</div>
-                    <br>
-                    <div class="dotText">20% ສຳລັບທົດສອບ</div>
-
-                    <pre>
-                    X_train, X_test, y_train, y_test = train_test_split(
-                        X,
-                        y,
-                        test_size=0.2,
-                        random_state=42,
-                        stratify=y
-                    )
-                    </pre> -->
-
+                <div class="content" style="display: flex; gap: 25px; justify-content: center;align-items: center;">
 
                     <div class="panel-card card-teal">
                         <div class="card-day">ຂໍ້ມູນຝຶກ (Training data)</div>
@@ -1160,37 +1166,13 @@
 
                         </div>
 
-
                         <!-- Output Section -->
                         <div class="output-container">
                             <div class="prompt output-prompt">Out [1]:</div>
                             <details class="modern-details" style="width: 100%; display: block;">
                                 <summary>Output ...</summary>
-
-                                <!-- <div class="output-area">
-                                    ຄ່າ Hyperparameters ທີ່ດີທີ່ສຸດສຳລັບ:<br>
-                                    <b>RandomForestClassifier</b>
-                                    <pre>
-                                                            n_estimators = 500, 
-                                                            min_samples_split = 2, 
-                                                            max_features = 'log2', 
-                                                            max_depth = None
-                                </pre><br>
-                                    <b>ExtraTreesClassifier</b>
-                                    <pre>
-                                                            n_estimators = 500, 
-                                                            min_samples_split = 2, 
-                                                            max_features = 'log2', 
-                                                            max_depth = None
-                                </pre><br>
-                                    <b>DecisionTreeClassifier</b>
-                                    <pre>
-                                                            random_state=42
-                                </pre>
-
-                                </div> -->
-
-                                <div style="width: 100%; display: flex; gap: 15px;">
+                                <div
+                                    style="width: 100%; display: flex; gap: 15px; justify-content: center;align-items: center;">
                                     <div class="panel-card card-teal" style="width: 380px;">
                                         <div class="card-day">Hyper parameter</div>
                                         <div class="card-number" style="font-size: 30px;">RandomForestClassifier</div>
@@ -1233,7 +1215,6 @@
 
                 </div>
             </details>
-
 
             <details class="modern-details">
                 <summary>
@@ -1291,12 +1272,12 @@
 
             </details>
 
-
             <details class="modern-details">
                 <summary>
                     ຂັ້ນຕອນ 4. ການທົດສອບຄວາມຊັດເຈນຂອງແບບຈຳລອງ (Model Testing Accuracy)
                 </summary>
-                <div class="content" style="width: 100%; display: flex; gap: 15px;">
+                <div class="content"
+                    style="width: 100%; display: flex; gap: 15px; justify-content: center;align-items: center;">
                     <div class="panel-card card-teal" style="width: 380px;">
                         <div class="card-day">Accuracy</div>
                         <div class="card-number" style="font-size: 30px;">RandomForestClassifier</div>
@@ -1332,10 +1313,12 @@
                         </div>
                     </div>
 
-
                 </div>
+
                 <br>
-                <div class="dotText">ຈາກ 3 ແບບຈຳລອງເທິງນີ້ແມ່ນເຫັນວ່າ ແບບຈຳລອງ ExtraTreesClassifier ຈະມີຄວາມຊັດເຈນກ່ວາ
+                <div class="dotText"
+                    style="width: 100%; display: flex; gap: 15px; justify-content: center;align-items: center;">
+                    ຈາກ 3 ແບບຈຳລອງເທິງນີ້ແມ່ນເຫັນວ່າ ແບບຈຳລອງ ExtraTreesClassifier ຈະມີຄວາມຊັດເຈນກ່ວາ
                 </div>
             </details>
 
@@ -1865,10 +1848,10 @@
                             <thead>
                                 <tr style="background-color: #008080; color: white; text-align: left;">
                                     <th style="padding: 8px;">Algorithms (Models)</th>
-                                    <th style="padding: 8px;">ຄວາມຊັດເຈນ (Accuracy)</th>
-                                    <th style="padding: 8px;">Precision (ຄວາມຊັດເຈນ)</th>
-                                    <th style="padding: 8px;">Recall (ຄວາມລະອຽດ)</th>
-                                    <th style="padding: 8px;">F1-Score (ຄ່າສະເລ່ຍຮ່ວມ)</th>
+                                    <th style="padding: 8px;">Accuracy (ຄວາມຊັດເຈນ) </th>
+                                    <th style="padding: 8px;">Precision (ຄ່າກະຕວງ)</th>
+                                    <th style="padding: 8px;">Recall (ຄ່າກວດຈັບຕົວຈິງ)</th>
+                                    <th style="padding: 8px;">F1-Score (ຄ່າສະເລ່ຍຮ່ວມຂອງ Pre&Rec)</th>
                                     <th style="padding: 8px;">ຄ່າສະເລ່ຍລວມ</th>
                                 </tr>
                             </thead>
@@ -1907,19 +1890,13 @@
                         </table>
                     </div>
                     <br>
-                    <hr>
-                    <br>
-                    <div style="margin-bottom: 25px;">
-                        <div style="display: flex; gap: 10px;">
-                            <img src="image/extraTree.png" style="width: 450px; height: 350px;">
-                            <img src="image/forest.png" style="width: 450px; height: 350px;">
-                            <img src="image/des.png" style="width: 450px; height: 350px;">
-                        </div>
+                    <div style="margin-bottom: 25px; display: flex; justify-content: center;align-items: center;">
+                        <img src="image/extraTree.png" style="width: 450px; height: 350px;">
+                        <img src="image/forest.png" style="width: 450px; height: 350px;">
+                        <img src="image/des.png" style="width: 450px; height: 350px;">
                     </div>
                     <br>
-                    <hr>
-                    <br>
-                    <div style="width: 100%; display: flex; gap: 15px;">
+                    <div style="width: 100%; display: flex; gap: 15px; justify-content: center;align-items: center;">
                         <div class="panel-card card-teal" style="width: 380px;">
                             <div class="card-day">Accuracy</div>
                             <div class="card-number" style="font-size: 30px;">ExtraTreesClassifier</div>
@@ -1954,14 +1931,15 @@
                             </div>
                         </div>
                     </div>
-
-                    <b>ສະຫຼຸບ:</b> ExtraTreesClassifier ເປັນຕົວເມີນໄດ້ສູງທີ່ສຸດ (ຄວາມຊັດເຈນ: 74.42%) <br>
-                    <b>Extra Trees (Extremely Randomized Trees)</b> ໄດ້ຮັບໄຊຊະນະໃນການທົດລອງຄັ້ງນີ້
-                    ເນື່ອງຈາກຄວາມສາມາດໃນການສ້າງຕົ້ນໄມ້ຕັດສິນໃຈແບບສຸ່ມທັງໝົດ
-                    ເຮັດໃຫ້ຫຼຸດຄ່າຄວາມຜິດພາດທີ່ເກີດຈາກຄວາມປ່ຽນແປງຂອງຂໍ້ມູນ (Variance) ໄດ້ດີທີ່ສຸດ.<br>
-                    <b>ຜົນປະໂຫຍດເພີ່ມເຕີມ:</b> ໃຊ້ເວລາໃນການປະມວນຜົນໜ້ອຍກວ່າ Random Forest ເພາະບໍ່ຕ້ອງຄິດໄລ່ຄ່າ
-                    Entropy/Gini Split ທີ່ດີທີ່ສຸດໃນທຸກໆຄັ້ງ.
-                    <br>
+                    <div style="display: block;">
+                        <b>ສະຫຼຸບ:</b> ExtraTreesClassifier ເປັນຕົວເມີນໄດ້ສູງທີ່ສຸດ (ຄວາມຊັດເຈນ: 74.42%) <br>
+                        <b>Extra Trees (Extremely Randomized Trees)</b> ໄດ້ຮັບໄຊຊະນະໃນການທົດລອງຄັ້ງນີ້
+                        ເນື່ອງຈາກຄວາມສາມາດໃນການສ້າງຕົ້ນໄມ້ຕັດສິນໃຈແບບສຸ່ມທັງໝົດ
+                        ເຮັດໃຫ້ຫຼຸດຄ່າຄວາມຜິດພາດທີ່ເກີດຈາກຄວາມປ່ຽນແປງຂອງຂໍ້ມູນ (Variance) ໄດ້ດີທີ່ສຸດ.<br>
+                        <b>ຜົນປະໂຫຍດເພີ່ມເຕີມ:</b> ໃຊ້ເວລາໃນການປະມວນຜົນໜ້ອຍກວ່າ Random Forest ເພາະບໍ່ຕ້ອງຄິດໄລ່ຄ່າ
+                        Entropy/Gini Split ທີ່ດີທີ່ສຸດໃນທຸກໆຄັ້ງ.
+                        <br>
+                    </div>
                 </div>
             </details>
 
@@ -2011,8 +1989,9 @@
                             <div class="prompt output-prompt">Out [1]:</div>
                             <details class="modern-details" style="width: 100%; display: block;">
                                 <summary>ຜົນອອກ (Output) </summary>
-                                <div class="output-area">
-                                    <img src="image/testResult.png" style="width: 850px; height: 450px;">
+                                <div
+                                    style="justify-content: center; align-items: center; display:block; text-align: center;">
+                                    <img src="image/testResult.png" style="width: 550px; height: 250px;">
                                     <!-- style="width: 1150px; height: 450px;" -->
                                 </div>
                             </details>
@@ -2119,7 +2098,14 @@
                             <div class="prompt output-prompt">Out [1]:</div>
                             <details class="modern-details" style="width: 100%; display: block;">
                                 <summary>Output (ຜົນອອກ)</summary>
-                                <img src="image/predit_vs_actual.png" style="width: 1150px; height: 450px;">
+                                <div
+                                    style="justify-content: center; align-items: center; display:block; text-align: center;">
+                                    <img src="image/predit_vs_actual.png" style="width: 1150px; height: 450px;">
+                                    <p class="dotText">
+                                        ຈາກເສັ້ນສະແດງເທິງນີ້ ສາມາດສະຫຼຸບໄດ້ວ່າ ລະຫວ່າງການຄາດເດົາ (predict) ແລະ
+                                        ການກວດຈັບຕົວຈິງ (actual) ແມ່ນໄປລວງດຽວກັນ. ແບບຈຳລອງໃຊ້ໄດ້
+                                    </p>
+                                </div>
                             </details>
                         </div>
                     </div>
@@ -2132,13 +2118,8 @@
         <!-- Slide 13 -->
         <div class="slide">
             <h2>10. ບັນຫາ ແລະ ອຸປະສັກ</h2>
-            <!-- <div class="label-row" style="font-size: 25px;">
-                <div class="label">1</div>
-                <div class="label-text">
-                    ຂໍ້ມູນທີ່ໄດ້ມາບໍ່ສົມດູນ (5200 records), ໄດ້ປັບໃຫ້ສົມດູນ ກາຍເປັນ 8360 records
-                </div>
-            </div> -->
-            <div style="display: flex; gap: 25px;">
+
+            <div style="display: flex; gap: 25px; justify-items: center; justify-content: center;">
                 <div class="panel-card card-teal" style="width: 380px;">
                     <div class="card-day">ຂໍ້ມູນບໍ່ສົມດູນ (imbalance)</div>
                     <div class="card-number" style="font-size: 35px;">1</div>
@@ -2205,7 +2186,8 @@
                             ຜ່ານການເຮັດການພະຍາກອນຜົນການຮຽນຂອງນັກສຶກສາ. ເຮົາເຫັນໄດ້ວ່າມັນມີ ປັດໄຈທີ່ສຳຄັນ (Important
                             features) ຕໍ່ຜົນການຮຽນຂອງນັກສຶກ ຕາມແຕ່ model ດັ່ງສະແດງໃນພາບລຸ່ມນີ້:
                         </summary>
-                        <div class="content">
+                        <div class="content"
+                            style="display: flex; gap: 15px; justify-items: center; justify-content: center;">
                             <div style="display: flex; gap: 15px; margin-bottom: 50px;">
                                 <div class="panel-card card-teal" style="width: 440px; height: 500px;">
                                     <div class="card-day">ແບບຈຳລອງອັນດັບ 1</div>
@@ -2251,7 +2233,8 @@
                             (ExtraTreeClassifier) ເປັນແບບຈຳລອງສຸດທ້າຍ ແລະ ປັດໃຈທີ່ສຳຄັນທີ່ ແບບຈຳລອງ
                             ດັ່ງກ່າວພະຍາກອນອອກມາມີດັ່ງສະແດງໃນພາບລຸ່ມນີ້:
                         </summary>
-                        <div class="content">
+                        <div class="content"
+                            style="display: flex; gap: 15ox; justify-items: center; justify-content: center;">
                             <div style="display: flex; gap: 10px;">
                                 <div class="panel-card card-teal" style="width: 850px; height: 600px;">
                                     <div class="card-day">feature important</div>
